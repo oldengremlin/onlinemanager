@@ -152,6 +152,18 @@ public class radiusData {
                 rowData.add(rs.getString("customername"));
                 rowData.add(rs.getString("location"));
             }
+//            Object[] rowData = new Object[columnCount];
+//                rowData.add(rs.getString("radacctid"));
+//                rowData.add(rs.getString("username"));
+//                rowData.add(rs.getString("router"));
+//                rowData.add(rs.getString("sessionid"));
+//                rowData.add(rs.getString("acctstarttime"));
+//                rowData.add(rs.getString("acctupdatetime"));
+//                rowData.add(rs.getString("acctstoptime"));
+//                rowData.add(rs.getString("framedipaddress"));
+//                rowData.add(rs.getString("dt"));
+//                rowData.add(rs.getString("customername"));
+//                rowData.add(rs.getString("location"));
             DFT.addRow(rowData);
         }
         return this;
