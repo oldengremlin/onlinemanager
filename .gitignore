@@ -3,6 +3,7 @@
 *.gz
 *.sh
 *.config.*
+*.key
 
 # Compiled class file
 *.class

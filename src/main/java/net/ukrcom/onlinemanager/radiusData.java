@@ -1,6 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * File:  src/main/java/net/ukrcom/onlinemanager/radiusData.java
  */
 package net.ukrcom.onlinemanager;
 
@@ -9,23 +8,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
  * @author olden
  */
 public class radiusData {
 
     protected String serverName;
-    protected String portNumber;
     protected String databaseName;
     protected String username;
     protected String password;
@@ -33,10 +27,7 @@ public class radiusData {
     protected Statement statement;
     protected jConfig config;
 
-    private JFrame setup;
-
     public radiusData() throws SQLException {
-
         try {
             this.config = new jConfigSerializing().load();
             this.serverName = this.config.getServerName();
@@ -47,249 +38,214 @@ public class radiusData {
             Logger.getLogger(radiusData.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        this.con = DriverManager.getConnection("jdbc:mysql://" + this.serverName + "/" + this.databaseName, this.username, this.password);
+        this.con = DriverManager.getConnection(
+                "jdbc:mysql://" + serverName + "/" + databaseName,
+                username, password);
+
         this.statement = con.createStatement();
     }
 
     public radiusData closeConnections() throws SQLException {
-        this.con.close();
+        con.close();
         return this;
     }
 
-    public radiusData getData(DefaultTableModel DFT, int days, boolean onlineOnly, int selectedIndex, String customeFilter, String usernameFilter) throws
-            SQLException {
-        String SQL;
+    // ====================== ОСНОВНИЙ ЗАПИТ ======================
+    public radiusData getData(DefaultTableModel DFT, int days, boolean onlineOnly,
+            int selectedIndex, String customerFilter, String usernameFilter)
+            throws SQLException {
 
-        SQL = ""
-                + "SELECT "
-                + " radacct.radacctid, "
-                + " radacct.username, "
-                + " substr(radacct.username, locate('@',radacct.username)+1) AS router, "
-                + " acctsessionid AS sessionid, "
-                + " acctstarttime, "
-                + " acctupdatetime, "
-                + " acctstoptime, "
-                + " framedipaddress, "
-                + " dt, "
-                + " customername, "
-                + " location "
-                + "FROM radacct "
-                + "LEFT JOIN radacct_customers_link a ON (a.radacctid = radacct.radacctid) "
-                + "LEFT JOIN customers b ON (b.id = a.customerid) "
-                + "WHERE "
-                + " radacct.username LIKE 'dhcp_%' ";
-        if (onlineOnly) {
-            SQL += " AND ( acctstoptime IS NULL AND radacct.radacctid>=? ) ";
-        } else {
-            SQL += " AND ( acctstoptime IS NULL OR DATE_SUB(CURDATE(), INTERVAL ? DAY)<=acctstarttime ) ";
-        }
-        SQL += " AND ( radacct.username LIKE ? OR framedipaddress" + (selectedIndex == 0 ? " LIKE " : "=") + "? ) ";
-        if (customeFilter.isEmpty()) {
-            SQL += " AND ( customername IS NULL OR customername LIKE ? ) ";
-        } else {
-            SQL += " AND ( customername IS NOT NULL AND customername LIKE ? ) ";
-        }
-        SQL += "ORDER BY acctstarttime, acctupdatetime, acctstoptime, router, username";
-
-        SQL = SQL.replaceAll("\\s+", " ").trim();
-
-//        System.err.println("SQL: " + SQL);
-        //ResultSet rs = this.statement.executeQuery(SQL);
-        PreparedStatement prepareStatement = this.con.prepareStatement(SQL);
+        String sql = """
+                SELECT 
+                    radacct.radacctid, 
+                    radacct.username, 
+                    SUBSTR(radacct.username, LOCATE('@', radacct.username) + 1) AS router, 
+                    acctsessionid AS sessionid, 
+                    acctstarttime, 
+                    acctupdatetime, 
+                    acctstoptime, 
+                    framedipaddress, 
+                    dt, 
+                    customername, 
+                    location 
+                FROM radacct 
+                LEFT JOIN radacct_customers_link a ON a.radacctid = radacct.radacctid 
+                LEFT JOIN customers b ON b.id = a.customerid 
+                WHERE radacct.username LIKE 'dhcp_%'
+                """;
 
         if (onlineOnly) {
-            prepareStatement.setInt(1, 0);                                  // AND ( acctstoptime IS NULL AND radacct.radacctid>=? )
+            sql += " AND (acctstoptime IS NULL AND radacct.radacctid >= ?) ";
         } else {
-            prepareStatement.setInt(1, days);                               // AND ( acctstoptime IS NULL OR DATE_SUB(CURDATE(), INTERVAL ? DAY)<=acctstarttime )
+            sql += " AND (acctstoptime IS NULL OR DATE_SUB(CURDATE(), INTERVAL ? DAY) <= acctstarttime) ";
         }
 
-        if (usernameFilter.isEmpty()) {
-            prepareStatement.setString(2, "%");                             // AND ( radacct.username LIKE ? OR framedipaddress" + (selectedIndex == 0 ? " LIKE " : "=") + "? )
-            prepareStatement.setString(3, "%");                             // AND ( radacct.username LIKE ? OR framedipaddress" + (selectedIndex == 0 ? " LIKE " : "=") + "? )
+        sql += " AND (radacct.username LIKE ? OR framedipaddress"
+                + (selectedIndex == 0 ? " LIKE " : "=") + "?) ";
+
+        if (customerFilter.isEmpty()) {
+            sql += " AND (customername IS NULL OR customername LIKE ?) ";
         } else {
-            prepareStatement.setString(2, "%" + usernameFilter + "%");      // AND ( radacct.username LIKE ? OR framedipaddress" + (selectedIndex == 0 ? " LIKE " : "=") + "? )
-            if (selectedIndex == 0) {
-                prepareStatement.setString(3, "%" + usernameFilter + "%");  // AND ( radacct.username LIKE ? OR framedipaddress" + (selectedIndex == 0 ? " LIKE " : "=") + "? )
+            sql += " AND (customername IS NOT NULL AND customername LIKE ?) ";
+        }
+
+        sql += " ORDER BY acctstarttime, acctupdatetime, acctstoptime, router, username";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            int p = 1;
+            ps.setInt(p++, onlineOnly ? 0 : days);
+
+            if (usernameFilter.isEmpty()) {
+                ps.setString(p++, "%");
+                ps.setString(p++, "%");
             } else {
-                prepareStatement.setString(3, usernameFilter);              // AND ( radacct.username LIKE ? OR framedipaddress" + (selectedIndex == 0 ? " LIKE " : "=") + "? )
+                ps.setString(p++, "%" + usernameFilter + "%");
+                ps.setString(p++, selectedIndex == 0 ? "%" + usernameFilter + "%" : usernameFilter);
             }
-        }
 
-        if (customeFilter.isEmpty()) {
-            prepareStatement.setString(4, "%");                             // AND ( customername IS NULL OR customername LIKE ? )
-        } else {
-            prepareStatement.setString(4, "%" + customeFilter + "%");       // AND ( customername IS NOT NULL AND customername LIKE ? )
-        }
+            ps.setString(p, customerFilter.isEmpty() ? "%" : "%" + customerFilter + "%");
 
-//        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-//            System.err.print(ste + "\n");
-//        }
-        /*
-        System.err.println(
-                Arrays.toString(Thread.currentThread().getStackTrace()).replace(',', '\n')
-        );
-         */
-        System.err.println(prepareStatement.toString().replaceAll("^[^:]+: ", ""));
+            printPreparedSql(ps);   // ← один рядок
 
-        ResultSet rs = prepareStatement.executeQuery();
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-
-        DFT.setRowCount(0);
-
-        while (rs.next()) {
-            Vector rowData = new Vector();
-            for (int i = 1; i <= columnCount; i++) {
-                rowData.add(rs.getString("radacctid"));
-                rowData.add(rs.getString("username"));
-                rowData.add(rs.getString("router"));
-                rowData.add(rs.getString("sessionid"));
-                rowData.add(rs.getString("acctstarttime"));
-                rowData.add(rs.getString("acctupdatetime"));
-                rowData.add(rs.getString("acctstoptime"));
-                rowData.add(rs.getString("framedipaddress"));
-                rowData.add(rs.getString("dt"));
-                rowData.add(rs.getString("customername"));
-                rowData.add(rs.getString("location"));
-            }
-//            Object[] rowData = new Object[columnCount];
-//                rowData.add(rs.getString("radacctid"));
-//                rowData.add(rs.getString("username"));
-//                rowData.add(rs.getString("router"));
-//                rowData.add(rs.getString("sessionid"));
-//                rowData.add(rs.getString("acctstarttime"));
-//                rowData.add(rs.getString("acctupdatetime"));
-//                rowData.add(rs.getString("acctstoptime"));
-//                rowData.add(rs.getString("framedipaddress"));
-//                rowData.add(rs.getString("dt"));
-//                rowData.add(rs.getString("customername"));
-//                rowData.add(rs.getString("location"));
-            DFT.addRow(rowData);
-        }
-        return this;
-    }
-
-    public radiusData getDuplicateData(DefaultTableModel DFT) throws
-            SQLException {
-        String SQL = "SELECT "
-                + "     username, "
-                + "     COUNT(*) AS count "
-                + "FROM radacct "
-                + "WHERE "
-                + "     radacct.username LIKE 'dhcp_%' AND "
-                + "     acctstoptime IS NULL "
-                + "GROUP BY username "
-                + "ORDER BY count DESC, username";
-        SQL = SQL.replaceAll("\\s+", " ").trim();
-
-        System.err.println(SQL);
-
-        ResultSet rs = this.statement.executeQuery(SQL);
-
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-
-        DFT.setRowCount(0);
-
-        while (rs.next()) {
-            Vector rowData = new Vector();
-            boolean needAddRow = false;
-            for (int i = 1; i <= columnCount; i++) {
-                if (Integer.parseInt(rs.getString("count")) > 1) {
-                    rowData.add(rs.getString("username"));
-                    rowData.add(rs.getString("count"));
-                    needAddRow = true;
+            try (ResultSet rs = ps.executeQuery()) {
+                DFT.setRowCount(0);
+                while (rs.next()) {
+                    DFT.addRow(new Object[]{
+                        rs.getString("radacctid"),
+                        rs.getString("username"),
+                        rs.getString("router"),
+                        rs.getString("sessionid"),
+                        rs.getString("acctstarttime"),
+                        rs.getString("acctupdatetime"),
+                        rs.getString("acctstoptime"),
+                        rs.getString("framedipaddress"),
+                        rs.getString("dt"),
+                        rs.getString("customername"),
+                        rs.getString("location")
+                    });
                 }
             }
-            if (needAddRow) {
-                DFT.addRow(rowData);
+        }
+        return this;
+    }
+
+    // ====================== ДУБЛІКАТИ ======================
+    public radiusData getDuplicateData(DefaultTableModel DFT) throws
+            SQLException {
+        String sql = """
+                SELECT username, COUNT(*) AS count 
+                FROM radacct 
+                WHERE username LIKE 'dhcp_%' AND acctstoptime IS NULL 
+                GROUP BY username 
+                ORDER BY count DESC, username
+                """;
+
+        printSql(sql);
+
+        try (ResultSet rs = statement.executeQuery(sql)) {
+            DFT.setRowCount(0);
+            while (rs.next()) {
+                if (rs.getInt("count") > 1) {
+                    DFT.addRow(new Object[]{
+                        rs.getString("username"),
+                        rs.getInt("count")
+                    });
+                }
             }
         }
-
         return this;
     }
 
-    public radiusData getDuplicateSessions(DefaultTableModel DFT, String un) throws
+    // ====================== ДЕТАЛІ ДУБЛІКАТІВ ======================
+    public radiusData getDuplicateSessions(DefaultTableModel DFT, String username) throws
             SQLException {
-        String SQL = "SELECT radacctid, framedipaddress, acctstarttime, acctupdatetime "
-                + "FROM radacct "
-                + "WHERE username=? AND acctstoptime IS NULL";
-        SQL = SQL.replaceAll("\\s+", " ").trim();
-        PreparedStatement prepareStatement = this.con.prepareStatement(SQL);
-        prepareStatement.setString(1, un);
+        String sql = """
+                SELECT radacctid, framedipaddress, acctstarttime, acctupdatetime 
+                FROM radacct 
+                WHERE username = ? AND acctstoptime IS NULL
+                """;
 
-        System.err.println(prepareStatement.toString().replaceAll("^[^:]+: ", ""));
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, username);
+            printPreparedSql(ps);
 
-        ResultSet rs = prepareStatement.executeQuery();
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-
-        DFT.setRowCount(0);
-        while (rs.next()) {
-            Vector rowData = new Vector();
-            for (int i = 1; i <= columnCount; i++) {
-                rowData.add(rs.getString("radacctid"));
-                rowData.add(rs.getString("framedipaddress"));
-                rowData.add(rs.getString("acctstarttime"));
-                rowData.add(rs.getString("acctupdatetime"));
+            try (ResultSet rs = ps.executeQuery()) {
+                DFT.setRowCount(0);
+                while (rs.next()) {
+                    DFT.addRow(new Object[]{
+                        rs.getString("radacctid"),
+                        rs.getString("framedipaddress"),
+                        rs.getString("acctstarttime"),
+                        rs.getString("acctupdatetime")
+                    });
+                }
             }
-            DFT.addRow(rowData);
         }
-
         return this;
     }
 
-    public radiusData getAcctStopTimeCandidate(DefaultTableModel DFT, String st, String un, String ip) throws
-            SQLException {
-        String SQL = "( "
-                + " SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate "
-                + "     FROM radacct "
-                + "     WHERE username=? AND  acctstarttime>? ORDER BY acctstarttime,acctupdatetime,acctstoptime LIMIT 1 "
-                + ") UNION ( "
-                + " SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate "
-                + "     FROM radacct "
-                + "     WHERE framedipaddress=? AND acctstarttime>? ORDER BY acctstarttime,acctupdatetime,acctstoptime LIMIT 1 "
-                + ") ORDER BY acctstoptime_candidate LIMIT 1;";
-        SQL = SQL.replaceAll("\\s+", " ").trim();
-        PreparedStatement prepareStatement = this.con.prepareStatement(SQL);
-        prepareStatement.setString(1, un);
-        prepareStatement.setString(2, st);
-        prepareStatement.setString(3, ip);
-        prepareStatement.setString(4, st);
+    // ====================== КАНДИДАТ НА ЗАКРИТТЯ ======================
+    public radiusData getAcctStopTimeCandidate(DefaultTableModel DFT, String startTime, String username, String ip)
+            throws SQLException {
 
-        System.err.println(prepareStatement.toString().replaceAll("^[^:]+: ", ""));
+        String sql = """
+                (SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate 
+                 FROM radacct 
+                 WHERE username = ? AND acctstarttime > ? 
+                 ORDER BY acctstarttime, acctupdatetime, acctstoptime LIMIT 1)
+                UNION
+                (SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate 
+                 FROM radacct 
+                 WHERE framedipaddress = ? AND acctstarttime > ? 
+                 ORDER BY acctstarttime, acctupdatetime, acctstoptime LIMIT 1)
+                ORDER BY acctstoptime_candidate LIMIT 1
+                """;
 
-        ResultSet rs = prepareStatement.executeQuery();
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, startTime);
+            ps.setString(3, ip);
+            ps.setString(4, startTime);
 
-        DFT.setRowCount(0);
-        while (rs.next()) {
-            Vector rowData = new Vector();
-            rowData.add(st);
-            for (int i = 1; i <= columnCount; i++) {
-                rowData.add(rs.getString("acctstoptime_candidate"));
+            printPreparedSql(ps);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                DFT.setRowCount(0);
+                while (rs.next()) {
+                    DFT.addRow(new Object[]{startTime,
+                                            rs.getString("acctstoptime_candidate")});
+                }
             }
-            DFT.addRow(rowData);
         }
-
         return this;
     }
 
-    public radiusData correctionAcctStopTime(Long id, String st) throws
+    public radiusData correctionAcctStopTime(Long id, String stopTime) throws
             SQLException {
-        String SQL = "UPDATE radacct SET acctstoptime=? WHERE radacctid=?";
-        PreparedStatement prepareStatement = this.con.prepareStatement(SQL);
-        prepareStatement.setString(1, st);
-        prepareStatement.setLong(2, id);
+        String sql = "UPDATE radacct SET acctstoptime = ? WHERE radacctid = ?";
 
-        System.err.println(prepareStatement.toString().replaceAll("^[^:]+: ", ""));
-
-        prepareStatement.executeUpdate();
-
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, stopTime);
+            ps.setLong(2, id);
+            printPreparedSql(ps);
+            ps.executeUpdate();
+        }
         return this;
     }
 
+    private void printPreparedSql(PreparedStatement ps) {
+        printSql(ps
+                .toString()
+                .replaceAll("^[^:]+: ", "")
+        );
+    }
+
+    private void printSql(String sql) {
+        System.err.println(sql
+                .replaceAll("\\s+", " ")
+                .trim()
+        );
+    }
 }
 
 /*
