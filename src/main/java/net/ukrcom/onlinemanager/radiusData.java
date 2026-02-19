@@ -145,12 +145,18 @@ public class radiusData {
         try (ResultSet rs = statement.executeQuery(sql)) {
             DFT.setRowCount(0);
             while (rs.next()) {
-                if (rs.getInt("count") > 1) {
+                int count = rs.getInt("count");
+                if (count > 1) {
                     DFT.addRow(new Object[]{
                         rs.getString("username"),
-                        rs.getString("count")
+                        String.valueOf(count)
                     });
                 }
+//                if (rs.getInt("count") > 1) {
+//                    DFT.addRow(new Object[]{
+//                        rs.getString("username"),
+//                        rs.getString("count")
+//                    });
 //                } else if (Integer.parseInt(rs.getString("count")) > 1) {
 //                    DFT.addRow(new Object[]{
 //                        rs.getString("username"),
