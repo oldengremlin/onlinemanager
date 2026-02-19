@@ -21,12 +21,13 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Install WiX Toolset (потрібен для .exe)
+      - name: Install WiX Toolset
         run: |
           choco install wixtoolset --version=3.14 -y --force
           echo "PATH=$env:PATH;C:\Program Files (x86)\WiX Toolset v3.14\bin" >> $env:GITHUB_ENV
 
       - name: Build Windows EXE (self-contained)
+        shell: cmd                    # ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
         run: mvn clean package -B -Djpackage.skip=false -Djpackage.skip.windows=false -Djpackage.skip.deb=true
 
       - name: Upload Windows installer
