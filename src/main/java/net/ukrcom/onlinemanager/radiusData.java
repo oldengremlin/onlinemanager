@@ -148,9 +148,15 @@ public class radiusData {
                 if (rs.getInt("count") > 1) {
                     DFT.addRow(new Object[]{
                         rs.getString("username"),
-                        rs.getInt("count")
+                        rs.getString("count")
                     });
                 }
+//                } else if (Integer.parseInt(rs.getString("count")) > 1) {
+//                    DFT.addRow(new Object[]{
+//                        rs.getString("username"),
+//                        rs.getString("count")
+//                    });
+//                }
             }
         }
         return this;
