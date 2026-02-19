@@ -13,25 +13,17 @@ import javax.swing.JFrame;
  *
  * @author olden
  */
-public class JSetup extends javax.swing.JFrame {
+public class JSetup extends javax.swing.JDialog {
 
     /**
      * Creates new form jSetup
+     *
+     * @param owner
      */
-    public JSetup() {
+    public JSetup(JFrame owner) {
+        super(owner, true); // true = модальне вікно
+        this.owner = owner;
         initComponents();
-
-        try {
-            jConfig config = new jConfigSerializing().load();
-
-            jTextFieldServerName.setText(config.getServerName());
-            jTextFieldDatabaseName.setText(config.getDatabaseName());
-            jTextFieldUsername.setText(config.getUsername());
-            jPasswordFieldPassword.setText(config.getPassword());
-
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(JSetup.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -69,6 +61,11 @@ public class JSetup extends javax.swing.JFrame {
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setPreferredSize(new java.awt.Dimension(380, 200));
         setSize(new java.awt.Dimension(380, 200));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jPanelDatabaseConfig.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -94,6 +91,11 @@ public class JSetup extends javax.swing.JFrame {
 
         jButtonServerName.setText("❌");
         jButtonServerName.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonServerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonServerNameActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -120,6 +122,11 @@ public class JSetup extends javax.swing.JFrame {
 
         jButtonDatabaseName.setText("❌");
         jButtonDatabaseName.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonDatabaseName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDatabaseNameActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -146,6 +153,11 @@ public class JSetup extends javax.swing.JFrame {
 
         jButtonUsername.setText("❌");
         jButtonUsername.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUsernameActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -170,6 +182,11 @@ public class JSetup extends javax.swing.JFrame {
 
         jButtonPassword.setText("❌");
         jButtonPassword.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPasswordActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -238,41 +255,38 @@ public class JSetup extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonOkActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info
-                    : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JSetup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JSetup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JSetup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JSetup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void jButtonServerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonServerNameActionPerformed
+        jTextFieldServerName.setText("");
+    }//GEN-LAST:event_jButtonServerNameActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JSetup().setVisible(true);
-            }
-        });
+    private void jButtonDatabaseNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDatabaseNameActionPerformed
+        jTextFieldDatabaseName.setText("");
+    }//GEN-LAST:event_jButtonDatabaseNameActionPerformed
+
+    private void jButtonUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUsernameActionPerformed
+        jTextFieldUsername.setText("");
+    }//GEN-LAST:event_jButtonUsernameActionPerformed
+
+    private void jButtonPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPasswordActionPerformed
+        jPasswordFieldPassword.setText("");
+    }//GEN-LAST:event_jButtonPasswordActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        loadConfig();
+    }//GEN-LAST:event_formWindowActivated
+
+    private void loadConfig() {
+        try {
+            jConfig config = new jConfigSerializing().load();
+
+            jTextFieldServerName.setText(config.getServerName());
+            jTextFieldDatabaseName.setText(config.getDatabaseName());
+            jTextFieldUsername.setText(config.getUsername());
+            jPasswordFieldPassword.setText(config.getPassword());
+
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(JSetup.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -295,4 +309,5 @@ public class JSetup extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private JFrame setup;
+    private final JFrame owner;
 }

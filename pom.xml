@@ -16,6 +16,22 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
+    
+        <!-- jpackage налаштування -->
+        <jpackage.app.name>Onlinemanager</jpackage.app.name>
+        <jpackage.app.version>1.0</jpackage.app.version>  <!-- можна брати з git tag або вручну -->
+        <jpackage.main.jar>${project.artifactId}-${project.version}.jar</jpackage.main.jar>
+    
+        <!-- за замовчуванням вимикаємо, вмикаємо в профілі або -D -->
+        <jpackage.skip>true</jpackage.skip>
+        <jpackage.skip.windows>${jpackage.skip}</jpackage.skip.windows>
+        <jpackage.skip.deb>${jpackage.skip}</jpackage.skip.deb>
+        <jpackage.skip.rpm>${jpackage.skip}</jpackage.skip.rpm>
     </properties>
     <!--
     https://mvnrepository.com/ 
@@ -75,116 +91,30 @@
             <version>2.21.0</version>
         </dependency>
     </dependencies>
+    
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
-            
-            <!-- https://www.baeldung.com/executable-jar-with-maven -->
 
-            <!--
-            We’ll begin by copying all required dependencies into the folder
-            that we’ll specify
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/libs
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!--
-            Second, we are going to create executable and classpath-aware jar, 
-            with the link to the dependencies copied in the first step
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>${exec.mainClass}</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <!--
-            The Apache Maven Assembly Plugin allows users to aggregate the
-            project output along with its dependencies, modules, site
-            documentation, and other files into a single, runnable package.
-
-            The main goal in the assembly plugin is the single goal, which is
-            used to create all assemblies (all other goals are deprecated and
-            will be removed in a future release).
-            -->
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>${exec.mainClass}</mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-            
-            <!--
-            Apache Maven Shade Plugin provides the capability to package the 
-            artifact in an uber-jar, which consists of all dependencies required
-            to run the project. Moreover, it supports shading — i.e. renaming —
-            the packages of some of the dependencies.
-            -->
+            <!-- 1. Fat JAR з правильним attached artifact (саме це було потрібно) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
+                        <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>all</shadedClassifierName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>${exec.mainClass}</mainClass>
                                 </transformer>
                             </transformers>
-
-                            <!--
-                            https://stackoverflow.com/questions/52742593/maven-shade-plugin-mssql-jdbc-instant-jni-error-invalid-signature-file-ma
-                            -->
+                            <!-- Ось ключове: виключаємо підписи -->
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -192,116 +122,66 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
-                            
-                            <archive>
-                                <manifest>
-                                    <mainClass>${exec.mainClass}</mainClass>
-                                </manifest>
-                            </archive>
-                            
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <!--
-            This allows for packaging executable jar or war archives and run an
-            application “in place.”
-            -->                        
-            <!--
+            <!-- 2. jpackage (self-contained з JRE всередині) -->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.6</version>
                 <executions>
+
+                    <!-- Windows .exe -->
                     <execution>
+                        <id>jpackage-windows</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>repackage</goal>
+                            <goal>jpackage</goal>
                         </goals>
                         <configuration>
-                            <classifier>spring-boot</classifier>
+                            <skip>${jpackage.skip.windows}</skip>
+                            <name>Onlinemanager</name>
+                            <appVersion>1.0</appVersion>
+                            <input>${project.build.directory}</input>
+                            <mainJar>${project.artifactId}-${project.version}-all.jar</mainJar>
                             <mainClass>${exec.mainClass}</mainClass>
+                            <destination>${project.build.directory}/jpackage</destination>
+                            <winShortcut>true</winShortcut>
+                            <winMenu>true</winMenu>
+                            <winMenuGroup>NOC Tools</winMenuGroup>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>                        
-            -->
 
-            <!--
-            jarsigner -verify -verbose -certs onlinemanager-1.0-20250110.061433.jar
-            jarsigner -verify -verbose -certs onlinemanager-1.0-20250110.061433-shaded.jar
-            jarsigner -verify -verbose -certs onlinemanager-1.0-20250110.061433-spring-boot.jar
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jarsigner-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
+                    <!-- Linux .deb -->
                     <execution>
-                        <id>signme</id>
+                        <id>jpackage-deb</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>sign</goal>
+                            <goal>jpackage</goal>
                         </goals>
+                        <configuration>
+                            <skip>${jpackage.skip.deb}</skip>
+                            <name>onlinemanager</name>
+                            <appVersion>1.0</appVersion>
+                            <input>${project.build.directory}</input>
+                            <mainJar>${project.artifactId}-${project.version}-all.jar</mainJar>
+                            <mainClass>${exec.mainClass}</mainClass>
+                            <destination>${project.build.directory}/jpackage</destination>
+                            <linuxShortcut>true</linuxShortcut>
+                            <linuxPackageName>onlinemanager</linuxPackageName>
+                        </configuration>
                     </execution>
-                </executions>
-                <configuration>
-                    <!-- keytool -genkeypair -alias onlinemanager -keystore onlinemanager.key -keypass ukrhub -validity 3650 -storepass ukrhub -keyalg rsa -v -->
-                    <!--
-                        What is your first and last name?
-                        [Unknown]:  Oleksandr Russkikh
-                        What is the name of your organizational unit?
-                        [Unknown]:  NOC
-                        What is the name of your organization?
-                        [Unknown]:  Ukrcom
-                        What is the name of your City or Locality?
-                        [Unknown]:  Kyiv
-                        What is the name of your State or Province?
-                        [Unknown]:  KY
-                        What is the two-letter country code for this unit?
-                        [Unknown]:  UA
-                        Is CN=Oleksandr Russkikh, OU=NOC, O=Ukrcom, L=Kyiv, ST=KY, C=UA correct?
-                        [no]:  yes
 
-                        Generating 3 072 bit RSA key pair and self-signed certificate (SHA384withRSA) with a validity of 3 650 days
-                        for: CN=Oleksandr Russkikh, OU=NOC, O=Ukrcom, L=Kyiv, ST=KY, C=UA
-                    -->
-                    <!-- https://www.baeldung.com/keytool-intro -->
-                    <keystore>${session.executionRootDirectory}/onlinemanager.key</keystore>
-                    <alias>onlinemanager</alias>
-                    <storepass>ukrhub</storepass>
-                    <keypass>ukrhub</keypass>
-                </configuration>
+                </executions>
             </plugin>
-            
-            <!--
-            We want to cover a standalone web application that is packed inside
-            a jar file.
-            -->
-            <!--
-            #<plugin>
-            #    <groupId>org.apache.tomcat.maven</groupId>
-            #    <artifactId>tomcat7-maven-plugin</artifactId>
-            #    <version>2.2</version>
-            #    <executions>
-            #        <execution>
-            #            <id>tomcat-run</id>
-            #            <goals>
-            #                <goal>exec-war-only</goal>
-            #            </goals>
-            #            <phase>package</phase>
-            #            <configuration>
-            #                <path>/</path>
-            #                <enableNaming>false</enableNaming>
-            #                <finalName>webapp.${project.build.finalName}.jar</finalName>
-            #                <charset>utf-8</charset>
-            #            </configuration>
-            #        </execution>
-            #    </executions>
-            #</plugin>
-            -->                        
-                                               
+
         </plugins>
     </build>
 </project>

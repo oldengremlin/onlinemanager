@@ -1,0 +1,76 @@
+name: Build Onlinemanager
+
+on:
+  push:
+    tags: [ 'v*' ]          # тільки при створенні тегу, наприклад v1.2
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Install WiX Toolset (потрібен для .exe)
+        run: |
+          choco install wixtoolset --version=3.14 -y --force
+          echo "PATH=$env:PATH;C:\Program Files (x86)\WiX Toolset v3.14\bin" >> $env:GITHUB_ENV
+
+      - name: Build Windows EXE (self-contained)
+        run: mvn clean package -B -Djpackage.skip=false -Djpackage.skip.windows=false -Djpackage.skip.deb=true
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: onlinemanager-windows
+          path: target/jpackage/Onlinemanager-*.exe
+
+  build-linux-deb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Install fakeroot
+        run: sudo apt-get update && sudo apt-get install -y fakeroot
+
+      - name: Build Linux DEB
+        run: mvn clean package -B -Djpackage.skip=false -Djpackage.skip.deb=false -Djpackage.skip.windows=true
+
+      - name: Upload DEB
+        uses: actions/upload-artifact@v4
+        with:
+          name: onlinemanager-deb
+          path: target/jpackage/onlinemanager_*.deb
+
+  release:
+    needs: [build-windows, build-linux-deb]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/onlinemanager-windows/Onlinemanager-*.exe
+            artifacts/onlinemanager-deb/onlinemanager_*.deb
+          generate_release_notes: true
+          draft: false
+          prerelease: false

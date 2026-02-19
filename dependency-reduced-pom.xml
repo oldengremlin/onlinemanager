@@ -6,49 +6,19 @@
   <name>Ukrcom / DHCP / Online manager</name>
   <version>1.0-${maven.build.timestamp}</version>
   <build>
-    <resources>
-      <resource>
-        <filtering>true</filtering>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/libs</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>libs/</classpathPrefix>
-              <mainClass>${exec.mainClass}</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.0</version>
         <executions>
           <execution>
+            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
             <configuration>
               <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>all</shadedClassifierName>
               <transformers>
                 <transformer>
                   <mainClass>${exec.mainClass}</mainClass>
@@ -61,46 +31,75 @@
                     <exclude>META-INF/*.SF</exclude>
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
                   </excludes>
                 </filter>
               </filters>
-              <archive>
-                <manifest>
-                  <mainClass>${exec.mainClass}</mainClass>
-                </manifest>
-              </archive>
             </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-jarsigner-plugin</artifactId>
-        <version>3.1.0</version>
+        <groupId>org.panteleyev</groupId>
+        <artifactId>jpackage-maven-plugin</artifactId>
+        <version>1.6.6</version>
         <executions>
           <execution>
-            <id>signme</id>
+            <id>jpackage-windows</id>
+            <phase>package</phase>
             <goals>
-              <goal>sign</goal>
+              <goal>jpackage</goal>
             </goals>
+            <configuration>
+              <skip>${jpackage.skip.windows}</skip>
+              <name>Onlinemanager</name>
+              <appVersion>1.0</appVersion>
+              <input>${project.build.directory}</input>
+              <mainJar>${project.artifactId}-${project.version}-all.jar</mainJar>
+              <mainClass>${exec.mainClass}</mainClass>
+              <destination>${project.build.directory}/jpackage</destination>
+              <winShortcut>true</winShortcut>
+              <winMenu>true</winMenu>
+              <winMenuGroup>NOC Tools</winMenuGroup>
+            </configuration>
+          </execution>
+          <execution>
+            <id>jpackage-deb</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jpackage</goal>
+            </goals>
+            <configuration>
+              <skip>${jpackage.skip.deb}</skip>
+              <name>onlinemanager</name>
+              <appVersion>1.0</appVersion>
+              <input>${project.build.directory}</input>
+              <mainJar>${project.artifactId}-${project.version}-all.jar</mainJar>
+              <mainClass>${exec.mainClass}</mainClass>
+              <destination>${project.build.directory}/jpackage</destination>
+              <linuxShortcut>true</linuxShortcut>
+              <linuxPackageName>onlinemanager</linuxPackageName>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <keystore>${session.executionRootDirectory}/onlinemanager.key</keystore>
-          <alias>onlinemanager</alias>
-          <storepass>ukrhub</storepass>
-          <keypass>ukrhub</keypass>
-        </configuration>
       </plugin>
     </plugins>
   </build>
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
+    <jpackage.main.jar>${project.artifactId}-${project.version}.jar</jpackage.main.jar>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <jpackage.app.version>1.0</jpackage.app.version>
+    <jpackage.skip.windows>${jpackage.skip}</jpackage.skip.windows>
+    <jpackage.skip.rpm>${jpackage.skip}</jpackage.skip.rpm>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
-    <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageClassName>${exec.mainClass}</packageClassName>
+    <jpackage.app.name>Onlinemanager</jpackage.app.name>
+    <jpackage.skip>true</jpackage.skip>
     <timestamp>${maven.build.timestamp}</timestamp>
+    <jpackage.skip.deb>${jpackage.skip}</jpackage.skip.deb>
   </properties>
 </project>

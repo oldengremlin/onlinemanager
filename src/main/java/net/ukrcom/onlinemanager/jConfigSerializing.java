@@ -64,6 +64,37 @@ public class jConfigSerializing {
         );
         config = (jConfig) decoder.readObject();
          */
+
+        // Спочатку шукаємо в поточному каталозі (для mvn exec:java)
+        File configFile = new File(xmlName);
+        System.err.print("Load config: try " + configFile.toString());
+
+        // Якщо не знайшли — шукаємо поруч з JAR-ом (саме те, що потрібно для jpackage)
+        if (!configFile.exists()) {
+            // Знаходимо шлях до JAR-файлу, з якого запустилася програма
+            String path = getClass().getProtectionDomain()
+                    .getCodeSource().getLocation().getPath();
+            File jarFile = new File(path).getCanonicalFile();
+            File binDir = jarFile.getParentFile();           // /opt/onlinemanager/bin
+
+            configFile = new File(binDir, xmlName);
+            System.err.print(", " + configFile.toString());
+
+            // Якщо й там немає — шукаємо в домашній папці користувача
+            if (!configFile.exists()) {
+                File homeConfig = new File(System.getProperty("user.home"), ".onlinemanager/" + xmlName);
+                System.err.print(", " + homeConfig.toString());
+                if (homeConfig.exists()) {
+                    configFile = homeConfig;
+                }
+            }
+        }
+        System.err.println();
+        
+        if (!configFile.exists()) {
+            throw new FileNotFoundException("Configuration file not found: ".concat(configFile.getAbsolutePath()));
+        }
+
         config = new XmlMapper()
                 .readValue(
                         new File(this.xmlName),

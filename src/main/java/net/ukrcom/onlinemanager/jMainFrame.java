@@ -255,16 +255,10 @@ public class jMainFrame extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
 
         if (this.setup == null) {
-            this.setup = new JSetup();
+            this.setup = new JSetup(this);
         }
-        if (this.setup.isVisible()) {
-            this.setup.setVisible(false);
-        } else {
-            this.setup.setVisible(true);
-        }
-
-        this.setup.setExtendedState(this.setup.getExtendedState());
-
+        this.setup.setLocationRelativeTo(this);
+        this.setup.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
