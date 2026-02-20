@@ -51,11 +51,20 @@ public class gridOnline extends javax.swing.JPanel {
         this.jFormattedTextFieldDays.setComponentPopupMenu(jCutCopyPaste.jPopupMenu);
         this.jTextFieldCustomerFilter.setComponentPopupMenu(jCutCopyPaste.jPopupMenu);
         this.jTextFieldUsernameAndFramedIPFilter.setComponentPopupMenu(jCutCopyPaste.jPopupMenu);
-
-        this.loadData();
+        if (!java.beans.Beans.isDesignTime()) {
+            this.loadData();
+        }
         this.jTextFieldCustomerFilter.requestFocus();
 
 //        this.showCell(0, 0);
+    }
+
+    public static class BeanInfo extends java.beans.SimpleBeanInfo {
+
+        @Override
+        public java.awt.Image getIcon(int iconType) {
+            return null; // або поверни іконку, якщо хочеш
+        }
     }
 
     /**
@@ -422,7 +431,7 @@ public class gridOnline extends javax.swing.JPanel {
 
     private void jTableOnlineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableOnlineMouseClicked
         this.jTableOnlineSelectRow(
-            jTableOnline.getSelectedRow()
+                jTableOnline.getSelectedRow()
         );
     }//GEN-LAST:event_jTableOnlineMouseClicked
 
