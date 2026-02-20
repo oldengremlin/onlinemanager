@@ -64,8 +64,6 @@ public class jMainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Online Manager");
         setMinimumSize(new java.awt.Dimension(800, 600));
-
-        gridOnlinePanel.setLayout(new javax.swing.BoxLayout(gridOnlinePanel, javax.swing.BoxLayout.PAGE_AXIS));
         getContentPane().add(gridOnlinePanel, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setText("File");
