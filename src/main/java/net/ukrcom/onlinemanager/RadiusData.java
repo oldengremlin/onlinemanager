@@ -69,9 +69,15 @@ public class RadiusData {
         init();
     }
 
-    public RadiusData closeConnections() throws SQLException {
-        con.close();
-        return this;
+    public void closeConnections() throws SQLException {
+        if (statement != null && !statement.isClosed()) {
+            statement.close();
+        }
+        if (con != null && !con.isClosed()) {
+            con.close();
+        }
+        con = null;
+        statement = null;
     }
 
     // ====================== ОСНОВНИЙ ЗАПИТ ======================

@@ -21,6 +21,14 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Extract clean version from tag
+        id: get_version
+        shell: bash
+        run: |
+          TAG=${GITHUB_REF#refs/tags/v}
+          CLEAN_VERSION=$(echo "$TAG" | sed 's/^v//')
+          echo "CLEAN_VERSION=$CLEAN_VERSION" >> $GITHUB_ENV
+
       - name: Install WiX Toolset
         run: |
           choco install wixtoolset --version=3.14 -y --force

@@ -4,6 +4,7 @@
  */
 package net.ukrcom.onlinemanager;
 
+import java.sql.SQLException;
 import javax.swing.JFrame;
 
 /**
@@ -21,6 +22,8 @@ public class jMainFrame extends javax.swing.JFrame {
         this.mainPanelVisible = true;
         this.jCutCopyPaste = new jCutCopyPaste();
         initComponents();
+        this.timer = new Timer(this);
+        checkStateAutoRefresh();
         this.gridOnlinePanel.getRootPane().setDefaultButton(this.gridOnlinePanel.jButtonRefresh);
     }
 
@@ -48,11 +51,12 @@ public class jMainFrame extends javax.swing.JFrame {
         jMenuItemSelectAll = new javax.swing.JMenuItem();
         jMenuRefresh = new javax.swing.JMenu();
         jMenuItemResetAndRefresh = new javax.swing.JMenuItem();
+        jCheckBoxMenuItemAutoRefresh = new javax.swing.JCheckBoxMenuItem();
         jMenuWindow = new javax.swing.JMenu();
         jMenuItemMainPanel = new javax.swing.JMenuItem();
         jMenuItemDuplicateCheck = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItemSetup = new javax.swing.JMenuItem();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -131,6 +135,16 @@ public class jMainFrame extends javax.swing.JFrame {
         });
         jMenuRefresh.add(jMenuItemResetAndRefresh);
 
+        jCheckBoxMenuItemAutoRefresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jCheckBoxMenuItemAutoRefresh.setSelected(true);
+        jCheckBoxMenuItemAutoRefresh.setText("Auto Refresh");
+        jCheckBoxMenuItemAutoRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItemAutoRefreshActionPerformed(evt);
+            }
+        });
+        jMenuRefresh.add(jCheckBoxMenuItemAutoRefresh);
+
         jMainMenuBar.add(jMenuRefresh);
 
         jMenuWindow.setText("Window");
@@ -154,13 +168,13 @@ public class jMainFrame extends javax.swing.JFrame {
         jMenuWindow.add(jMenuItemDuplicateCheck);
         jMenuWindow.add(jSeparator3);
 
-        jMenuItem3.setText("Setup");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemSetup.setText("Setup");
+        jMenuItemSetup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jMenuItemSetupActionPerformed(evt);
             }
         });
-        jMenuWindow.add(jMenuItem3);
+        jMenuWindow.add(jMenuItemSetup);
 
         jMainMenuBar.add(jMenuWindow);
 
@@ -170,6 +184,10 @@ public class jMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Exit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Exit
+        try {
+            RadiusData.getInstance().closeConnections();
+        } catch (SQLException ignored) {
+        }
         System.exit(0);
     }//GEN-LAST:event_Exit
 
@@ -190,11 +208,7 @@ public class jMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemSelectAllActionPerformed
 
     private void jMenuItemResetAndRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemResetAndRefreshActionPerformed
-        this.gridOnlinePanel.jFormattedTextFieldDays.setText("1");
-        this.gridOnlinePanel.jTextFieldUsernameAndFramedIPFilter.setText("");
-        this.gridOnlinePanel.jTextFieldCustomerFilter.setText("");
-        this.gridOnlinePanel.loadData();
-        this.gridOnlinePanel.jLabelCustomerFilter.requestFocus();
+        fullRefresh();
     }//GEN-LAST:event_jMenuItemResetAndRefreshActionPerformed
 
     private void jMenuItemMainPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMainPanelActionPerformed
@@ -250,58 +264,95 @@ public class jMainFrame extends javax.swing.JFrame {
 //        }
     }//GEN-LAST:event_jMenuItemDuplicateCheckActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jMenuItemSetupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSetupActionPerformed
 
         if (this.setup == null) {
             this.setup = new JSetup(this);
         }
         this.setup.setLocationRelativeTo(this);
         this.setup.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_jMenuItemSetupActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info
-                    : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jCheckBoxMenuItemAutoRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemAutoRefreshActionPerformed
+        checkStateAutoRefresh();
+    }//GEN-LAST:event_jCheckBoxMenuItemAutoRefreshActionPerformed
+
+    private void checkStateAutoRefresh() {
+        if (this.jCheckBoxMenuItemAutoRefresh.isSelected()) {
+            this.timer.start();
+        } else {
+            this.jCheckBoxMenuItemAutoRefresh.setText("Auto Refresh");
+            this.timer.stop();
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new jMainFrame().setVisible(true);
-        });
     }
+
+    public void fullRefresh() {
+        this.gridOnlinePanel.jFormattedTextFieldDays.setText("1");
+        this.gridOnlinePanel.jTextFieldUsernameAndFramedIPFilter.setText("");
+        this.gridOnlinePanel.jTextFieldCustomerFilter.setText("");
+        this.gridOnlinePanel.loadData();
+        this.gridOnlinePanel.jLabelCustomerFilter.requestFocus();
+    }
+
+    public void simpleRefresh() {
+        this.gridOnlinePanel.loadData();
+    }
+
+    @Override
+    public void dispose() {
+        if (timer != null) {
+            timer.stop();
+        }
+        try {
+            RadiusData.getInstance().closeConnections();
+        } catch (SQLException ignored) {
+        }
+        super.dispose();
+    }
+
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info
+//                    : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(jMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(() -> {
+//            new jMainFrame().setVisible(true);
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private net.ukrcom.onlinemanager.gridOnline gridOnlinePanel;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    protected javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemAutoRefresh;
     private javax.swing.JMenuBar jMainMenuBar;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItemDuplicateCheck;
     private javax.swing.JMenuItem jMenuItemEditCopy;
     private javax.swing.JMenuItem jMenuItemEditCut;
@@ -310,6 +361,7 @@ public class jMainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemMainPanel;
     private javax.swing.JMenuItem jMenuItemResetAndRefresh;
     private javax.swing.JMenuItem jMenuItemSelectAll;
+    private javax.swing.JMenuItem jMenuItemSetup;
     private javax.swing.JMenu jMenuRefresh;
     private javax.swing.JMenu jMenuWindow;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -319,4 +371,5 @@ public class jMainFrame extends javax.swing.JFrame {
     private boolean mainPanelVisible;
     private JFrame duplicateCheck;
     private JSetup setup;
+    private final Timer timer;
 }

@@ -449,8 +449,7 @@ public class gridOnline extends javax.swing.JPanel {
                             this.jWhereOperation.getSelectedIndex(),
                             this.jTextFieldCustomerFilter.getText().trim(),
                             this.jTextFieldUsernameAndFramedIPFilter.getText().trim()
-                    )
-                    .closeConnections();
+                    );
         } catch (SQLException ex) {
             Logger.getLogger(gridOnline.class.getName()).log(Level.SEVERE, null, ex);
         }

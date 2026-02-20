@@ -426,7 +426,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
                         .correctionAcctStopTime(
                                 Long.valueOf(this.currentRadAcctID),
                                 this.candidateAcctStopTime
-                        ).closeConnections();
+                        );
             } catch (SQLException ex) {
                 Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -450,7 +450,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
             RadiusData radiusData = RadiusData.getInstance()
                     .getDuplicateData(
                             (DefaultTableModel) this.jTableDuplicateSessions.getModel()
-                    ).closeConnections();
+                    );
         } catch (SQLException ex) {
             Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -491,7 +491,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
                     .getDuplicateSessions(
                             (DefaultTableModel) jTableUsernameDetail.getModel(),
                             this.currentUsername
-                    ).closeConnections();
+                    );
         } catch (SQLException ex) {
             Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -517,7 +517,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
                             this.currentAcctStartTime,
                             this.currentUsername,
                             this.currentFramedIPAddress
-                    ).closeConnections();
+                    );
         } catch (SQLException ex) {
             Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
         }
