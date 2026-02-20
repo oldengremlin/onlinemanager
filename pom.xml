@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.ukr-com</groupId>
     <artifactId>onlinemanager</artifactId>
-    <version>1.0-${maven.build.timestamp}</version>
+    <version>1.${maven.build.timestamp}</version>
     <packaging>jar</packaging>
     <name>Ukrcom / DHCP / Online manager</name>
     <properties>

@@ -4,7 +4,7 @@
   <groupId>net.ukr-com</groupId>
   <artifactId>onlinemanager</artifactId>
   <name>Ukrcom / DHCP / Online manager</name>
-  <version>1.0-${maven.build.timestamp}</version>
+  <version>1.${maven.build.timestamp}</version>
   <build>
     <plugins>
       <plugin>
