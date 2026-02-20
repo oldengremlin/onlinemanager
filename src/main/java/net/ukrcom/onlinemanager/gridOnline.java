@@ -432,7 +432,7 @@ public class gridOnline extends javax.swing.JPanel {
             System.err.print(jWhereOperation.getSelectedIndex() + " -> ");
             System.err.println(String.valueOf(jWhereOperation.getSelectedItem()));
              */
-            radiusData radiusData = new radiusData()
+            RadiusData radiusData = RadiusData.getInstance()
                     .getData(
                             (DefaultTableModel) jTableOnline.getModel(),
                             Integer.parseInt(this.jFormattedTextFieldDays.getText().trim()),
@@ -445,7 +445,6 @@ public class gridOnline extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(gridOnline.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         int rowCount = jTableOnline.getRowCount() - 1;
         this.jTableOnlineSelectRow(rowCount);
     }

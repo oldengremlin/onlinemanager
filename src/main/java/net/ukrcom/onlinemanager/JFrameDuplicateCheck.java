@@ -422,7 +422,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
 
         if (!SQL.isBlank()) {
             try {
-                radiusData radiusData = new radiusData()
+                RadiusData radiusData = RadiusData.getInstance()
                         .correctionAcctStopTime(
                                 Long.valueOf(this.currentRadAcctID),
                                 this.candidateAcctStopTime
@@ -447,7 +447,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
 
     private void jTableDuplicateSessionsLoadData() {
         try {
-            radiusData radiusData = new radiusData()
+            RadiusData radiusData = RadiusData.getInstance()
                     .getDuplicateData(
                             (DefaultTableModel) this.jTableDuplicateSessions.getModel()
                     ).closeConnections();
@@ -487,7 +487,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         this.candidateAcctStopTime = null;
 
         try {
-            radiusData radiusData = new radiusData()
+            RadiusData radiusData = RadiusData.getInstance()
                     .getDuplicateSessions(
                             (DefaultTableModel) jTableUsernameDetail.getModel(),
                             this.currentUsername
@@ -511,7 +511,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         this.currentAcctStartTime = this.jTableUsernameDetail.getValueAt(selectedRow, 2).toString();
 
         try {
-            radiusData radiusData = new radiusData()
+            RadiusData radiusData = RadiusData.getInstance()
                     .getAcctStopTimeCandidate(
                             (DefaultTableModel) this.jTableSessionFoundByUsername.getModel(),
                             this.currentAcctStartTime,

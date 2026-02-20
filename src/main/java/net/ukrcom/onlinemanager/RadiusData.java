@@ -17,7 +17,9 @@ import javax.swing.table.DefaultTableModel;
 /**
  * @author olden
  */
-public class radiusData {
+public class RadiusData {
+
+    private static volatile RadiusData instance;
 
     protected String serverName;
     protected String databaseName;
@@ -27,7 +29,24 @@ public class radiusData {
     protected Statement statement;
     protected jConfig config;
 
-    public radiusData() throws SQLException {
+    private RadiusData() throws SQLException {
+        init();
+    }
+
+    public static RadiusData getInstance() throws SQLException {
+        RadiusData localInstance = RadiusData.instance;
+        if (localInstance == null) {
+            synchronized (RadiusData.class) {
+                localInstance = RadiusData.instance;
+                if (localInstance == null) {
+                    RadiusData.instance = localInstance = new RadiusData();
+                }
+            }
+        }
+        return localInstance;
+    }
+
+    private void init() throws SQLException {
         try {
             this.config = new jConfigSerializing().load();
             this.serverName = this.config.getServerName();
@@ -35,7 +54,7 @@ public class radiusData {
             this.username = this.config.getUsername();
             this.password = this.config.getPassword();
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(radiusData.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RadiusData.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.con = DriverManager.getConnection(
@@ -45,13 +64,18 @@ public class radiusData {
         this.statement = con.createStatement();
     }
 
-    public radiusData closeConnections() throws SQLException {
+    public void reinit() throws SQLException {
+        closeConnections();
+        init();
+    }
+
+    public RadiusData closeConnections() throws SQLException {
         con.close();
         return this;
     }
 
     // ====================== ОСНОВНИЙ ЗАПИТ ======================
-    public radiusData getData(DefaultTableModel DFT, int days, boolean onlineOnly,
+    public RadiusData getData(DefaultTableModel DFT, int days, boolean onlineOnly,
             int selectedIndex, String customerFilter, String usernameFilter)
             throws SQLException {
 
@@ -130,7 +154,7 @@ public class radiusData {
     }
 
     // ====================== ДУБЛІКАТИ ======================
-    public radiusData getDuplicateData(DefaultTableModel DFT) throws
+    public RadiusData getDuplicateData(DefaultTableModel DFT) throws
             SQLException {
         String sql = """
                 SELECT username, COUNT(*) AS count 
@@ -169,7 +193,7 @@ public class radiusData {
     }
 
     // ====================== ДЕТАЛІ ДУБЛІКАТІВ ======================
-    public radiusData getDuplicateSessions(DefaultTableModel DFT, String username) throws
+    public RadiusData getDuplicateSessions(DefaultTableModel DFT, String username) throws
             SQLException {
         String sql = """
                 SELECT radacctid, framedipaddress, acctstarttime, acctupdatetime 
@@ -197,7 +221,7 @@ public class radiusData {
     }
 
     // ====================== КАНДИДАТ НА ЗАКРИТТЯ ======================
-    public radiusData getAcctStopTimeCandidate(DefaultTableModel DFT, String startTime, String username, String ip)
+    public RadiusData getAcctStopTimeCandidate(DefaultTableModel DFT, String startTime, String username, String ip)
             throws SQLException {
 
         String sql = """
@@ -232,7 +256,7 @@ public class radiusData {
         return this;
     }
 
-    public radiusData correctionAcctStopTime(Long id, String stopTime) throws
+    public RadiusData correctionAcctStopTime(Long id, String stopTime) throws
             SQLException {
         String sql = "UPDATE radacct SET acctstoptime = ? WHERE radacctid = ?";
 
@@ -261,7 +285,7 @@ public class radiusData {
 }
 
 /*
-CREATE USER 'radsel'@'94.125.120.5' IDENTIFIED BY 'YmE0OTA0MDBiZTVjZDUzMWE4Mjc2ZTM5NTYyYTZlYzNlY2Y1Y2IzYWQ5N2Q4';
-GRANT SELECT,UPDATE ON radius.* TO 'radsel'@'94.125.120.5';
+CREATE USER 'radsel'@'94.125.120.13' IDENTIFIED BY 'YmE0OTA0MDBiZTVjZDUzMWE4Mjc2ZTM5NTYyYTZlYzNlY2Y1Y2IzYWQ5N2Q4';
+GRANT SELECT,UPDATE ON radius.* TO 'radsel'@'94.125.120.13';
 FLUSH PRIVILEGES;
  */

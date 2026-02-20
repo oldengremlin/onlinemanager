@@ -5,6 +5,7 @@
 package net.ukrcom.onlinemanager;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -248,7 +249,8 @@ public class JSetup extends javax.swing.JDialog {
         config = new jConfig(serverName, databaseName, username, password);
         try {
             new jConfigSerializing().save(config);
-        } catch (IOException ex) {
+            RadiusData.getInstance().reinit();
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(JSetup.class.getName()).log(Level.SEVERE, null, ex);
         }
 

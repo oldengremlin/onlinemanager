@@ -1,105 +1,102 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package net.ukrcom.onlinemanager;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import org.apache.commons.lang3.SystemUtils;
 
-/*
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
- */
-/**
- *
- * @author olden
- */
 public class jConfigSerializing {
 
-    public String fileName = "onlinemanager.config.bin";
-    public String xmlName = "onlinemanager.config.xml";
+    public final String xmlName = "onlinemanager.config.xml";
 
-    public void save(jConfig config) throws FileNotFoundException,
-                                            IOException {
-        /*
-        try (FileOutputStream fileOut = new FileOutputStream(this.fileName);
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(config);
-        }
-        
-        //////////////////////
-        
-        XMLEncoder encoder = null;
-        encoder = new XMLEncoder(
-                new BufferedOutputStream(
-                        new FileOutputStream(this.xmlName)
-                )
-        );
-        encoder.writeObject(config);
-        encoder.close();
-         */
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.writeValue(new File(this.xmlName), config);
+    private File configFile;   // зберігаємо останній знайдений файл
+
+    // ====================== SAVE ======================
+    public void save(jConfig config) throws IOException {
+        Path targetPath = getConfigFilePath().toAbsolutePath();
+
+        // Створюємо папки, якщо їх немає
+        Files.createDirectories(targetPath.getParent());
+
+        new XmlMapper().writeValue(targetPath.toFile(), config);
+        this.configFile = targetPath.toFile();   // запам'ятовуємо
     }
 
-    public jConfig load() throws FileNotFoundException, IOException,
-                                 ClassNotFoundException {
-        jConfig config;
-        /*
-        try (FileInputStream fileIn = new FileInputStream(this.fileName);
-             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-            config = (jConfig) objectIn.readObject();
+    // ====================== LOAD ======================
+    public jConfig load() throws IOException, ClassNotFoundException {
+        Path path = getConfigFilePath();
+        this.configFile = path.toFile();
+
+        return new XmlMapper().readValue(path.toFile(), jConfig.class);
+    }
+
+    // ====================== ОСНОВНА ЛОГІКА ======================
+    private Path getConfigFilePath() throws IOException {
+        // 1. Поточна директорія (для mvn exec:java)
+        File f = new File(xmlName);
+        if (f.exists()) {
+            return f.toPath();
         }
-        
-        //////////////////////
-        
-        XMLDecoder decoder = null;
-        decoder = new XMLDecoder(
-                new BufferedInputStream(
-                        new FileInputStream(this.xmlName)
-                )
-        );
-        config = (jConfig) decoder.readObject();
-         */
 
-        // Спочатку шукаємо в поточному каталозі (для mvn exec:java)
-        File configFile = new File(xmlName);
-        System.err.print("Load config: try " + configFile.toString());
-
-        // Якщо не знайшли — шукаємо поруч з JAR-ом (саме те, що потрібно для jpackage)
-        if (!configFile.exists()) {
-            // Знаходимо шлях до JAR-файлу, з якого запустилася програма
+        // 2. Поруч з JAR-ом (/opt/onlinemanager/bin/...)
+        try {
             String path = getClass().getProtectionDomain()
                     .getCodeSource().getLocation().getPath();
-            File jarFile = new File(path).getCanonicalFile();
-            File binDir = jarFile.getParentFile();           // /opt/onlinemanager/bin
+            File jarDir = new File(path).getCanonicalFile().getParentFile();
+            f = new File(jarDir, xmlName);
+            if (f.exists()) {
+                return f.toPath();
+            }
+        } catch (IOException ignored) {
+        }
 
-            configFile = new File(binDir, xmlName);
-            System.err.print(", " + configFile.toString());
+        // 3. Стандартні шляхи користувача
+        File homeDir = new File(System.getProperty("user.home"));
 
-            // Якщо й там немає — шукаємо в домашній папці користувача
-            if (!configFile.exists()) {
-                File homeConfig = new File(System.getProperty("user.home"), ".onlinemanager/" + xmlName);
-                System.err.print(", " + homeConfig.toString());
-                if (homeConfig.exists()) {
-                    configFile = homeConfig;
+        if (SystemUtils.IS_OS_LINUX) {
+            f = new File(homeDir, ".config/onlinemanager/" + xmlName);
+            if (f.exists()) {
+                return f.toPath();
+            }
+
+            f = new File(homeDir, ".onlinemanager/" + xmlName);
+            if (f.exists()) {
+                return f.toPath();
+            }
+        } else if (SystemUtils.IS_OS_WINDOWS) {
+            String appData = System.getenv("APPDATA");
+            if (appData != null) {
+                f = new File(appData, "Onlinemanager\\" + xmlName);
+                if (f.exists()) {
+                    return f.toPath();
+                }
+            }
+            String localAppData = System.getenv("LOCALAPPDATA");
+            if (localAppData != null) {
+                f = new File(localAppData, "Onlinemanager\\" + xmlName);
+                if (f.exists()) {
+                    return f.toPath();
                 }
             }
         }
-        System.err.println();
-        
-        if (!configFile.exists()) {
-            throw new FileNotFoundException("Configuration file not found: ".concat(configFile.getAbsolutePath()));
+
+        // Якщо жоден не знайдено — повертаємо "найкращий" шлях для створення
+        if (SystemUtils.IS_OS_LINUX) {
+            return new File(homeDir, ".config/onlinemanager/" + xmlName).toPath();
+        } else if (SystemUtils.IS_OS_WINDOWS) {
+            String appData = System.getenv("APPDATA");
+            return new File(appData != null ? appData : homeDir.getPath(),
+                    "Onlinemanager\\" + xmlName).toPath();
         }
 
-        config = new XmlMapper()
-                .readValue(
-                        new File(this.xmlName),
-                        jConfig.class
-                );
-        return config;
+        return new File(xmlName).toPath(); // fallback
+    }
+
+    // ====================== REINIT ======================
+    public File getCurrentConfigFile() {
+        return configFile;
     }
 }
