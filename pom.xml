@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml ersion="1.0" encoding="UTF-8"?>
+<project xmlns="http://maen.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.ukr-com</groupId>
     <artifactId>onlinemanager</artifactId>
-    <version>1.1.${buildNumber}</version>
+    <ersion>1.1.${buildNumber}</version>
     <packaging>jar</packaging>
     <name>Ukrcom / DHCP / Online manager</name>
     <properties>
-        <buildNumber>00004</buildNumber>
+        <buildNumber>1.1.00003</buildNumber>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maen.compiler.release>21</maven.compiler.release>
         <packageClassName>${exec.mainClass}</packageClassName>
-        <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
-        <timestamp>${maven.build.timestamp}</timestamp>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maen.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
+        <timestamp>${maen.build.timestamp}</timestamp>
+        <maen.compiler.target>1.8</maven.compiler.target>
+        <maen.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maen.compiler.release>21</maven.compiler.release>
         <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
     
         <!-- jpackage налаштування -->
         <jpackage.app.name>Onlinemanager</jpackage.app.name>
-        <jpackage.app.version>1.0</jpackage.app.version>  <!-- можна брати з git tag або вручну -->
-        <jpackage.main.jar>${project.artifactId}-${project.version}.jar</jpackage.main.jar>
+        <jpackage.app.ersion>1.0</jpackage.app.version>  <!-- можна брати з git tag або вручну -->
+        <jpackage.main.jar>${project.artifactId}-${project.ersion}.jar</jpackage.main.jar>
     
         <!-- за замовчуванням вимикаємо, вмикаємо в профілі або -D -->
         <jpackage.skip>true</jpackage.skip>
@@ -34,61 +34,61 @@
         <jpackage.skip.rpm>${jpackage.skip}</jpackage.skip.rpm>
     </properties>
     <!--
-    https://mvnrepository.com/ 
+    https://mnrepository.com/ 
     -->
     <dependencies>    
-        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+        <!-- https://mnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
         <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
+            <groupId>com.microsoft.sqlserer</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <!-- version>12.8.1.jre11</version -->
-            <!-- version>9.5.0-SNAPSHOT.jre17-preview</version -->
-            <version>13.3.0.jre11-preview</version>
+            <!-- ersion>12.8.1.jre11</version -->
+            <!-- ersion>9.5.0-SNAPSHOT.jre17-preview</version -->
+            <ersion>13.3.0.jre11-preview</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+        <!-- https://mnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>9.5.0</version>
+            <ersion>9.5.0</version>
         </dependency>
         <dependency>
-            <groupId>com.github.javadev</groupId>
+            <groupId>com.github.jaadev</groupId>
             <artifactId>ukrainiantolatin</artifactId>
-            <version>1.2</version>
+            <ersion>1.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.20.0</version>
+            <ersion>3.20.0</version>
             <type>jar</type>
         </dependency>
         <!-- dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
-            <version>RELEASE240</version>
+            <ersion>RELEASE240</version>
         </dependency-->
-        <!-- https://mvnrepository.com/artifact/com.toedter/jcalendar -->
+        <!-- https://mnrepository.com/artifact/com.toedter/jcalendar -->
         <dependency>
             <groupId>com.toedter</groupId>
             <artifactId>jcalendar</artifactId>
-            <version>1.4</version>
+            <ersion>1.4</version>
         </dependency>
 
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>1.3.5</version>
+            <ersion>1.3.5</version>
         </dependency>
         
         <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
-            <version>1.11.0</version>
+            <ersion>1.11.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.21.0</version>
+            <ersion>2.21.0</version>
         </dependency>
     </dependencies>
     
@@ -97,9 +97,9 @@
             
             <!-- 1. Fat JAR з правильним attached artifact (саме це було потрібно) -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.1</version>
+                <groupId>org.apache.maen.plugins</groupId>
+                <artifactId>maen-shade-plugin</artifactId>
+                <ersion>3.6.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -109,9 +109,9 @@
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>all</shadedClassifierName>
-                            <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-all.jar</outputFile>
+                            <outputFile>${project.build.directory}/${project.artifactId}-${project.ersion}-all.jar</outputFile>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer implementation="org.apache.maen.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>${exec.mainClass}</mainClass>
                                 </transformer>
                             </transformers>
@@ -134,9 +134,9 @@
 
             <!-- 2. jpackage (self-contained з JRE всередині) -->
             <plugin>
-                <groupId>org.panteleyev</groupId>
-                <artifactId>jpackage-maven-plugin</artifactId>
-                <version>1.7.3</version>
+                <groupId>org.panteleye</groupId>
+                <artifactId>jpackage-maen-plugin</artifactId>
+                <ersion>1.7.3</version>
                 <executions>
 
                     <!-- Windows .exe -->
@@ -149,9 +149,9 @@
                         <configuration>
                             <skip>${jpackage.skip.windows}</skip>
                             <name>Onlinemanager</name>
-                            <appVersion>${project.version}</appVersion>
+                            <appVersion>${project.ersion}</appVersion>
                             <input>${project.build.directory}</input>
-                            <mainJar>${project.artifactId}-${project.version}-all.jar</mainJar>
+                            <mainJar>${project.artifactId}-${project.ersion}-all.jar</mainJar>
                             <mainClass>${exec.mainClass}</mainClass>
                             <destination>${project.build.directory}/jpackage</destination>
                             <winShortcut>true</winShortcut>
@@ -171,18 +171,18 @@
                             <linuxDebMaintainer>olden@ukr-com.net</linuxDebMaintainer>
                             <skip>${jpackage.skip.deb}</skip>
                             <name>onlinemanager</name>
-                            <appVersion>${project.version}</appVersion>
+                            <appVersion>${project.ersion}</appVersion>
                             <input>${project.build.directory}</input>
-                            <mainJar>${project.artifactId}-${project.version}-all.jar</mainJar>
+                            <mainJar>${project.artifactId}-${project.ersion}-all.jar</mainJar>
                             <mainClass>${exec.mainClass}</mainClass>
                             <destination>${project.build.directory}/jpackage</destination>
                             <linuxShortcut>true</linuxShortcut>
                             <linuxPackageName>onlinemanager</linuxPackageName>
-                            <javaOptions>
+                            <jaaOptions>
                                 <option>--no-sound</option>
-                            </javaOptions>
+                            </jaaOptions>
                             <additionalDependencies>
-                                <additionalDependency>--add-modules java.desktop</additionalDependency>
+                                <additionalDependency>--add-modules jaa.desktop</additionalDependency>
                             </additionalDependencies>
                         </configuration>
                     </execution>
@@ -193,11 +193,11 @@
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>3.2.1</version>
+                <artifactId>buildnumber-maen-plugin</artifactId>
+                <ersion>3.2.1</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
+                        <phase>alidate</phase>
                         <goals>
                             <goal>create</goal>
                         </goals>
