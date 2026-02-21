@@ -183,7 +183,7 @@
                                 <additionalDependency>--add-modules java.desktop</additionalDependency>
                             </additionalDependencies>
                             <javaOptions>
-                                <option>--no-sound</option>
+                                <option>no-sound</option>
                             </javaOptions>
                         </configuration>
                     </execution>
