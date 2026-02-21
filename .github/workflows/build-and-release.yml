@@ -3,9 +3,7 @@ name: Build Onlinemanager
 on:
   push:
     tags: [ 'v*' ]          # тільки при створенні тегу, наприклад v1.2
-    branches: [ main ]
   pull_request:
-    tags: [ 'v*' ]          # тільки при створенні тегу, наприклад v1.2
     branches: [ main ]
 
 jobs:

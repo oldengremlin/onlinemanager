@@ -182,7 +182,6 @@
                             <additionalDependencies>
                                 <additionalDependency>--add-modules java.desktop</additionalDependency>
                             </additionalDependencies>
-                            <linuxPackageDeps>libasound2</linuxPackageDeps>
                         </configuration>
                     </execution>
 
