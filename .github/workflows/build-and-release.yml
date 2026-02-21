@@ -37,7 +37,7 @@ jobs:
           path: target/jpackage/Onlinemanager-*.exe
 
   build-linux-deb:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
