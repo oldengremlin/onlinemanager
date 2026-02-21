@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <name>Ukrcom / DHCP / Online manager</name>
     <properties>
-        <buildNumber>00012</buildNumber>
+        <buildNumber>00014</buildNumber>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
         <maven.compiler.release>21</maven.compiler.release>
