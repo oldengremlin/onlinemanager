@@ -17,7 +17,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
@@ -168,6 +167,7 @@
                             <goal>jpackage</goal>
                         </goals>
                         <configuration>
+                            <linuxDebMaintainer>olden@ukr-com.net</linuxDebMaintainer>
                             <skip>${jpackage.skip.deb}</skip>
                             <name>onlinemanager</name>
                             <appVersion>${project.version}</appVersion>
@@ -177,6 +177,12 @@
                             <destination>${project.build.directory}/jpackage</destination>
                             <linuxShortcut>true</linuxShortcut>
                             <linuxPackageName>onlinemanager</linuxPackageName>
+                            <javaOptions>
+                                <option>--no-sound</option>
+                            </javaOptions>
+                            <additionalDependencies>
+                                <additionalDependency>--add-modules java.desktop</additionalDependency>
+                            </additionalDependencies>
                         </configuration>
                     </execution>
 

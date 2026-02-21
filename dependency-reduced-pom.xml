@@ -74,6 +74,7 @@
               <goal>jpackage</goal>
             </goals>
             <configuration>
+              <linuxDebMaintainer>olden@ukr-com.net</linuxDebMaintainer>
               <skip>${jpackage.skip.deb}</skip>
               <name>onlinemanager</name>
               <appVersion>${project.version}</appVersion>
@@ -83,6 +84,12 @@
               <destination>${project.build.directory}/jpackage</destination>
               <linuxShortcut>true</linuxShortcut>
               <linuxPackageName>onlinemanager</linuxPackageName>
+              <javaOptions>
+                <option>--no-sound</option>
+              </javaOptions>
+              <additionalDependencies>
+                <additionalDependency>--add-modules java.desktop</additionalDependency>
+              </additionalDependencies>
             </configuration>
           </execution>
         </executions>
