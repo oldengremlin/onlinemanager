@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Online Manager
+GenericName=Radius Online Monitor for JunOS Broadband Subscriber Management
+Comment=onlinemanager — Моніторинг активних DHCP-сесій JunOS Broadband Subscriber Management
+Exec=/opt/onlinemanager/bin/onlinemanager %U
+Icon=/opt/onlinemanager/lib/onlinemanager.png
+Terminal=false
+Categories=Utility;System;Network;
+StartupNotify=true
