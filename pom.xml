@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <name>Ukrcom / DHCP / Online manager</name>
     <properties>
-        <buildNumber>00022</buildNumber>
+        <buildNumber>00024</buildNumber>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
         <maven.compiler.release>21</maven.compiler.release>
@@ -181,12 +181,14 @@
                             <additionalDependencies>
                                 <additionalDependency>--add-modules java.desktop</additionalDependency>
                             </additionalDependencies>
-<!-- linuxMenuGroup>Utilities</linuxMenuGroup -->
-<linuxAppCategory>utils</linuxAppCategory>
-<!-- linuxPackageSection>utils</linuxPackageSection -->
+<linuxMenuGroup>Utilities</linuxMenuGroup>
+<linuxAppCategory>Utility</linuxAppCategory>
+<linuxPackageSection>utils</linuxPackageSection>
 <linuxDebMaintainer>olden@ukr-com.net</linuxDebMaintainer>
 <linuxPackageDeps>libasound2</linuxPackageDeps>
-<description>"onlinemanager — Моніторинг активних DHCP-сесій на Juniper MX (radacct)."</description>
+<description>"Radius online for JunOS Broadband Subscriber Management.\nonlinemanager — Моніторинг активних DHCP-сесій на Juniper MX (radacct)."</description>
+<resourceDir>src/main/resources</resourceDir>
+<icon>${project.basedir}/src/main/resources/onlinemanager.png</icon>
                         </configuration>
                     </execution>
 
