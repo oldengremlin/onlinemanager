@@ -158,6 +158,7 @@
                             <winShortcut>true</winShortcut>
                             <winMenu>true</winMenu>
                             <winMenuGroup>NOC Tools</winMenuGroup>
+                            <icon>${project.basedir}/src/main/resources/onlinemanager.ico</icon>
                         </configuration>
                     </execution>
 
