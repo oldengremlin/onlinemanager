@@ -48,6 +48,7 @@ public class VersionChecker {
             if (response.statusCode() == 200) {
                 String json = response.body();
                 String latestTag = extractTagFromJson(json);
+                System.err.println("Latest version: " + latestTag.replace("v", "").trim());
 
                 if (latestTag != null && isNewerVersion(latestTag, currentVersion)) {
                     int choice = JOptionPane.showConfirmDialog(
@@ -73,14 +74,26 @@ public class VersionChecker {
      * Читає версію з pom.properties (генерується jpackage)
      */
     private static String getCurrentVersion() {
-        try (InputStream is = VersionChecker.class.getResourceAsStream("/app/maven-archiver/pom.properties")) {
+        try (InputStream is = Onlinemanager.class.getClassLoader().getResourceAsStream("META-INF/maven/net.ukr-com/onlinemanager/pom.properties")) {
+
             if (is == null) {
+                System.err.println("Can't get resource /app/maven-archiver/pom.properties");
                 return null;
             }
 
             Properties props = new Properties();
             props.load(is);
-            return props.getProperty("version");
+
+            /*
+            System.out.println("Version: " + props.getProperty("version"));
+            System.out.println("GroupId: " + props.getProperty("groupId"));
+            System.out.println("ArtifactId: " + props.getProperty("artifactId"));
+             */
+            String version = props.getProperty("version");
+            if (version != null) {
+                System.err.println("Current version: " + version.replace("v", "").trim());
+            }
+            return version;
         } catch (IOException e) {
             System.err.println("Failed to read pom.properties: " + e.getMessage());
             return null;
