@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,9 @@ import javax.swing.table.DefaultTableModel;
 public class RadiusData {
 
     private static volatile RadiusData instance;
+
+    // Семафор, ініціалізований 3 дозволами, дозволяє лише 3 одночасних доступів
+    private static final Semaphore semaphore = new Semaphore(3);
 
     protected String serverName;
     protected String databaseName;
@@ -85,76 +89,87 @@ public class RadiusData {
             int selectedIndex, String customerFilter, String usernameFilter)
             throws SQLException {
 
-        String sql = """
-                SELECT 
-                    radacct.radacctid, 
-                    radacct.username, 
-                    SUBSTR(radacct.username, LOCATE('@', radacct.username) + 1) AS router, 
-                    acctsessionid AS sessionid, 
-                    acctstarttime, 
-                    acctupdatetime, 
-                    acctstoptime, 
-                    framedipaddress, 
-                    dt, 
-                    customername, 
-                    location 
-                FROM radacct 
-                LEFT JOIN radacct_customers_link a ON a.radacctid = radacct.radacctid 
-                LEFT JOIN customers b ON b.id = a.customerid 
-                WHERE radacct.username LIKE 'dhcp_%'
-                """;
+        try {
 
-        if (onlineOnly) {
-            sql += " AND (acctstoptime IS NULL AND radacct.radacctid >= ?) ";
-        } else {
-            sql += " AND (acctstoptime IS NULL OR DATE_SUB(CURDATE(), INTERVAL ? DAY) <= acctstarttime) ";
-        }
+            // Acquire a permit. Blocks if none are available.
+            semaphore.acquire();
 
-        sql += " AND (radacct.username LIKE ? OR framedipaddress"
-                + (selectedIndex == 0 ? " LIKE " : "=") + "?) ";
+            String sql = """
+                                 SELECT
+                                     radacct.radacctid,
+                                     radacct.username,
+                                     SUBSTR(radacct.username, LOCATE('@', radacct.username) + 1) AS router,
+                                     acctsessionid AS sessionid,
+                                     acctstarttime,
+                                     acctupdatetime,
+                                     acctstoptime,
+                                     framedipaddress,
+                                     dt,
+                                     customername,
+                                     location
+                                 FROM radacct
+                                 LEFT JOIN radacct_customers_link a ON a.radacctid = radacct.radacctid
+                                 LEFT JOIN customers b ON b.id = a.customerid
+                                 WHERE radacct.username LIKE 'dhcp_%'
+                                 """;
 
-        if (customerFilter.isEmpty()) {
-            sql += " AND (customername IS NULL OR customername LIKE ?) ";
-        } else {
-            sql += " AND (customername IS NOT NULL AND customername LIKE ?) ";
-        }
-
-        sql += " ORDER BY acctstarttime, acctupdatetime, acctstoptime, router, username";
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            int p = 1;
-            ps.setInt(p++, onlineOnly ? 0 : days);
-
-            if (usernameFilter.isEmpty()) {
-                ps.setString(p++, "%");
-                ps.setString(p++, "%");
+            if (onlineOnly) {
+                sql += " AND (acctstoptime IS NULL AND radacct.radacctid >= ?) ";
             } else {
-                ps.setString(p++, "%" + usernameFilter + "%");
-                ps.setString(p++, selectedIndex == 0 ? "%" + usernameFilter + "%" : usernameFilter);
+                sql += " AND (acctstoptime IS NULL OR DATE_SUB(CURDATE(), INTERVAL ? DAY) <= acctstarttime) ";
             }
 
-            ps.setString(p, customerFilter.isEmpty() ? "%" : "%" + customerFilter + "%");
+            sql += " AND (radacct.username LIKE ? OR framedipaddress"
+                    + (selectedIndex == 0 ? " LIKE " : "=") + "?) ";
 
-            printPreparedSql(ps);   // ← один рядок
+            if (customerFilter.isEmpty()) {
+                sql += " AND (customername IS NULL OR customername LIKE ?) ";
+            } else {
+                sql += " AND (customername IS NOT NULL AND customername LIKE ?) ";
+            }
 
-            try (ResultSet rs = ps.executeQuery()) {
-                DFT.setRowCount(0);
-                while (rs.next()) {
-                    DFT.addRow(new Object[]{
-                        rs.getString("radacctid"),
-                        rs.getString("username"),
-                        rs.getString("router"),
-                        rs.getString("sessionid"),
-                        rs.getString("acctstarttime"),
-                        rs.getString("acctupdatetime"),
-                        rs.getString("acctstoptime"),
-                        rs.getString("framedipaddress"),
-                        rs.getString("dt"),
-                        rs.getString("customername"),
-                        rs.getString("location")
-                    });
+            sql += " ORDER BY acctstarttime, acctupdatetime, acctstoptime, router, username";
+
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                int p = 1;
+                ps.setInt(p++, onlineOnly ? 0 : days);
+
+                if (usernameFilter.isEmpty()) {
+                    ps.setString(p++, "%");
+                    ps.setString(p++, "%");
+                } else {
+                    ps.setString(p++, "%" + usernameFilter + "%");
+                    ps.setString(p++, selectedIndex == 0 ? "%" + usernameFilter + "%" : usernameFilter);
+                }
+
+                ps.setString(p, customerFilter.isEmpty() ? "%" : "%" + customerFilter + "%");
+
+                printPreparedSql(ps);   // ← один рядок
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    DFT.setRowCount(0);
+                    while (rs.next()) {
+                        DFT.addRow(new Object[]{
+                            rs.getString("radacctid"),
+                            rs.getString("username"),
+                            rs.getString("router"),
+                            rs.getString("sessionid"),
+                            rs.getString("acctstarttime"),
+                            rs.getString("acctupdatetime"),
+                            rs.getString("acctstoptime"),
+                            rs.getString("framedipaddress"),
+                            rs.getString("dt"),
+                            rs.getString("customername"),
+                            rs.getString("location")
+                        });
+                    }
                 }
             }
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release the permit, making it available for another thread
+            semaphore.release();
         }
         return this;
     }
@@ -162,26 +177,32 @@ public class RadiusData {
     // ====================== ДУБЛІКАТИ ======================
     public RadiusData getDuplicateData(DefaultTableModel DFT) throws
             SQLException {
-        String sql = """
-                SELECT username, COUNT(*) AS count 
-                FROM radacct 
-                WHERE username LIKE 'dhcp_%' AND acctstoptime IS NULL 
-                GROUP BY username 
-                ORDER BY count DESC, username
-                """;
 
-        printSql(sql);
+        try {
 
-        try (ResultSet rs = statement.executeQuery(sql)) {
-            DFT.setRowCount(0);
-            while (rs.next()) {
-                int count = rs.getInt("count");
-                if (count > 1) {
-                    DFT.addRow(new Object[]{
-                        rs.getString("username"),
-                        String.valueOf(count)
-                    });
-                }
+            // Acquire a permit. Blocks if none are available.
+            semaphore.acquire();
+
+            String sql = """
+                                 SELECT username, COUNT(*) AS count
+                                 FROM radacct
+                                 WHERE username LIKE 'dhcp_%' AND acctstoptime IS NULL
+                                 GROUP BY username
+                                 ORDER BY count DESC, username
+                                 """;
+
+            printSql(sql);
+
+            try (ResultSet rs = statement.executeQuery(sql)) {
+                DFT.setRowCount(0);
+                while (rs.next()) {
+                    int count = rs.getInt("count");
+                    if (count > 1) {
+                        DFT.addRow(new Object[]{
+                            rs.getString("username"),
+                            String.valueOf(count)
+                        });
+                    }
 //                if (rs.getInt("count") > 1) {
 //                    DFT.addRow(new Object[]{
 //                        rs.getString("username"),
@@ -193,7 +214,13 @@ public class RadiusData {
 //                        rs.getString("count")
 //                    });
 //                }
+                }
             }
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release the permit, making it available for another thread
+            semaphore.release();
         }
         return this;
     }
@@ -201,27 +228,39 @@ public class RadiusData {
     // ====================== ДЕТАЛІ ДУБЛІКАТІВ ======================
     public RadiusData getDuplicateSessions(DefaultTableModel DFT, String username) throws
             SQLException {
-        String sql = """
-                SELECT radacctid, framedipaddress, acctstarttime, acctupdatetime 
-                FROM radacct 
-                WHERE username = ? AND acctstoptime IS NULL
-                """;
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, username);
-            printPreparedSql(ps);
+        try {
 
-            try (ResultSet rs = ps.executeQuery()) {
-                DFT.setRowCount(0);
-                while (rs.next()) {
-                    DFT.addRow(new Object[]{
-                        rs.getString("radacctid"),
-                        rs.getString("framedipaddress"),
-                        rs.getString("acctstarttime"),
-                        rs.getString("acctupdatetime")
-                    });
+            // Acquire a permit. Blocks if none are available.
+            semaphore.acquire();
+
+            String sql = """
+                                 SELECT radacctid, framedipaddress, acctstarttime, acctupdatetime
+                                 FROM radacct
+                                 WHERE username = ? AND acctstoptime IS NULL
+                                 """;
+
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, username);
+                printPreparedSql(ps);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    DFT.setRowCount(0);
+                    while (rs.next()) {
+                        DFT.addRow(new Object[]{
+                            rs.getString("radacctid"),
+                            rs.getString("framedipaddress"),
+                            rs.getString("acctstarttime"),
+                            rs.getString("acctupdatetime")
+                        });
+                    }
                 }
             }
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release the permit, making it available for another thread
+            semaphore.release();
         }
         return this;
     }
@@ -230,47 +269,70 @@ public class RadiusData {
     public RadiusData getAcctStopTimeCandidate(DefaultTableModel DFT, String startTime, String username, String ip)
             throws SQLException {
 
-        String sql = """
-                (SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate 
-                 FROM radacct 
-                 WHERE username = ? AND acctstarttime > ? 
-                 ORDER BY acctstarttime, acctupdatetime, acctstoptime LIMIT 1)
-                UNION
-                (SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate 
-                 FROM radacct 
-                 WHERE framedipaddress = ? AND acctstarttime > ? 
-                 ORDER BY acctstarttime, acctupdatetime, acctstoptime LIMIT 1)
-                ORDER BY acctstoptime_candidate LIMIT 1
-                """;
+        try {
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ps.setString(2, startTime);
-            ps.setString(3, ip);
-            ps.setString(4, startTime);
+            // Acquire a permit. Blocks if none are available.
+            semaphore.acquire();
 
-            printPreparedSql(ps);
+            String sql = """
+                                 (SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate
+                                  FROM radacct
+                                  WHERE username = ? AND acctstarttime > ?
+                                  ORDER BY acctstarttime, acctupdatetime, acctstoptime LIMIT 1)
+                                 UNION
+                                 (SELECT DATE_SUB(acctstarttime, INTERVAL 1 SECOND) AS acctstoptime_candidate
+                                  FROM radacct
+                                  WHERE framedipaddress = ? AND acctstarttime > ?
+                                  ORDER BY acctstarttime, acctupdatetime, acctstoptime LIMIT 1)
+                                 ORDER BY acctstoptime_candidate LIMIT 1
+                                 """;
 
-            try (ResultSet rs = ps.executeQuery()) {
-                DFT.setRowCount(0);
-                while (rs.next()) {
-                    DFT.addRow(new Object[]{startTime,
-                                            rs.getString("acctstoptime_candidate")});
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, username);
+                ps.setString(2, startTime);
+                ps.setString(3, ip);
+                ps.setString(4, startTime);
+
+                printPreparedSql(ps);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    DFT.setRowCount(0);
+                    while (rs.next()) {
+                        DFT.addRow(new Object[]{startTime,
+                                                rs.getString("acctstoptime_candidate")});
+                    }
                 }
             }
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release the permit, making it available for another thread
+            semaphore.release();
         }
         return this;
     }
 
     public RadiusData correctionAcctStopTime(Long id, String stopTime) throws
             SQLException {
-        String sql = "UPDATE radacct SET acctstoptime = ? WHERE radacctid = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, stopTime);
-            ps.setLong(2, id);
-            printPreparedSql(ps);
-            ps.executeUpdate();
+        try {
+
+            // Acquire a permit. Blocks if none are available.
+            semaphore.acquire();
+
+            String sql = "UPDATE radacct SET acctstoptime = ? WHERE radacctid = ?";
+
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, stopTime);
+                ps.setLong(2, id);
+                printPreparedSql(ps);
+                ps.executeUpdate();
+            }
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        } finally {
+            // Release the permit, making it available for another thread
+            semaphore.release();
         }
         return this;
     }

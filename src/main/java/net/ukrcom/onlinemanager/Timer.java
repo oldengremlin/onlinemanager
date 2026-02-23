@@ -23,7 +23,7 @@ public class Timer {
 
     public void start() {
         timer = new javax.swing.Timer(60 * 1000, (ActionEvent e) -> {
-            if (jmf.jCheckBoxMenuItemAutoRefresh.isSelected()) {
+            if (jmf.jCheckBoxMenuItemAutoRefresh.isSelected() && jmf.gridOnlinePanel.jButtonRefresh.isEnabled()) {
                 jmf.simpleRefresh();
 
                 LocalDateTime currentDateTime = LocalDateTime.now();

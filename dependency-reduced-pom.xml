@@ -74,7 +74,6 @@
               <goal>jpackage</goal>
             </goals>
             <configuration>
-              <linuxDebMaintainer>olden@ukr-com.net</linuxDebMaintainer>
               <skip>${jpackage.skip.deb}</skip>
               <name>onlinemanager</name>
               <appVersion>${project.version}</appVersion>
@@ -87,7 +86,14 @@
               <additionalDependencies>
                 <additionalDependency>--add-modules java.desktop</additionalDependency>
               </additionalDependencies>
+              <linuxMenuGroup>Utilities</linuxMenuGroup>
+              <linuxAppCategory>Utility</linuxAppCategory>
+              <linuxPackageSection>utils</linuxPackageSection>
+              <linuxDebMaintainer>olden@ukr-com.net</linuxDebMaintainer>
               <linuxPackageDeps>libasound2</linuxPackageDeps>
+              <description>"Radius online for JunOS Broadband Subscriber Management.\nonlinemanager — Моніторинг активних DHCP-сесій на Juniper MX (radacct)."</description>
+              <resourceDir>src/main/resources</resourceDir>
+              <icon>${project.basedir}/src/main/resources/onlinemanager.png</icon>
             </configuration>
           </execution>
         </executions>
@@ -124,7 +130,7 @@
     <jpackage.app.version>1.0</jpackage.app.version>
     <jpackage.skip.windows>${jpackage.skip}</jpackage.skip.windows>
     <jpackage.skip.rpm>${jpackage.skip}</jpackage.skip.rpm>
-    <buildNumber>00012</buildNumber>
+    <buildNumber>00024</buildNumber>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

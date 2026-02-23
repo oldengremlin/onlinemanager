@@ -22,6 +22,7 @@ public class jMainFrame extends javax.swing.JFrame {
         this.mainPanelVisible = true;
         this.jCutCopyPaste = new jCutCopyPaste();
         initComponents();
+        VersionChecker.checkForUpdates(this);
         this.timer = new Timer(this);
         checkStateAutoRefresh();
         this.gridOnlinePanel.getRootPane().setDefaultButton(this.gridOnlinePanel.jButtonRefresh);
@@ -237,31 +238,6 @@ public class jMainFrame extends javax.swing.JFrame {
         this.duplicateCheck.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.duplicateCheck.setExtendedState(this.duplicateCheck.getExtendedState() | JFrame.MAXIMIZED_HORIZ);
         //this.duplicateCheck.setExtendedState(this.duplicateCheck.getExtendedState() | JFrame.MAXIMIZED_BOTH );
-    ///////////////////////////////////////////////////////////////////////
-//        this.duplicateCheck.pack();
-//        this.duplicateCheck.setLocationRelativeTo(null);
-//        this.duplicateCheck.setVisible(true);
-
-//        try {
-//            if (this.duplicateCheck == null) {
-//                this.duplicateCheck = new JInternalFrameDuplicateCheck();
-//            }
-//            if (this.duplicateCheck.isVisible()) {
-//                this.duplicateCheck.setSelected(true);
-//                if (this.duplicateCheck.isIcon()) {
-//                    this.duplicateCheck.getDesktopPane().getDesktopManager().deiconifyFrame(this.duplicateCheck);
-//                }
-//                this.duplicateCheck.moveToFront();
-//                return;
-//            }
-//
-//            this.duplicateCheck.setVisible(true);
-////            this.gridOnlinePanel.add(this.duplicateCheck);
-//            this.duplicateCheck.setSelected(true);
-//            this.duplicateCheck.moveToFront();
-//        } catch (PropertyVetoException ex) {
-//            Logger.getLogger(jMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }//GEN-LAST:event_jMenuItemDuplicateCheckActionPerformed
 
     private void jMenuItemSetupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSetupActionPerformed
@@ -287,15 +263,23 @@ public class jMainFrame extends javax.swing.JFrame {
     }
 
     public void fullRefresh() {
+        this.gridOnlinePanel.jButtonRefresh.setEnabled(false);
+
         this.gridOnlinePanel.jFormattedTextFieldDays.setText("1");
         this.gridOnlinePanel.jTextFieldUsernameAndFramedIPFilter.setText("");
         this.gridOnlinePanel.jTextFieldCustomerFilter.setText("");
         this.gridOnlinePanel.loadData();
         this.gridOnlinePanel.jLabelCustomerFilter.requestFocus();
+
+        this.gridOnlinePanel.jButtonRefresh.setEnabled(true);
     }
 
     public void simpleRefresh() {
+        this.gridOnlinePanel.jButtonRefresh.setEnabled(false);
+
         this.gridOnlinePanel.loadData();
+
+        this.gridOnlinePanel.jButtonRefresh.setEnabled(true);
     }
 
     @Override
@@ -345,7 +329,7 @@ public class jMainFrame extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private net.ukrcom.onlinemanager.gridOnline gridOnlinePanel;
+    protected net.ukrcom.onlinemanager.gridOnline gridOnlinePanel;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     protected javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemAutoRefresh;
     private javax.swing.JMenuBar jMainMenuBar;
