@@ -79,6 +79,7 @@ public class gridOnline extends javax.swing.JPanel {
         jPanelTableOnline = new javax.swing.JPanel();
         jScrollPaneTableOnline = new javax.swing.JScrollPane();
         jTableOnline = new javax.swing.JTable();
+        jLabelTableOnlineRowCount = new javax.swing.JLabel();
         jPanelBottom = new javax.swing.JPanel();
         jPanelDetail = new javax.swing.JPanel();
         jLabelRadiusID = new javax.swing.JLabel();
@@ -125,7 +126,7 @@ public class gridOnline extends javax.swing.JPanel {
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         jPanelTableOnline.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanelTableOnline.setLayout(new javax.swing.OverlayLayout(jPanelTableOnline));
+        jPanelTableOnline.setLayout(new javax.swing.BoxLayout(jPanelTableOnline, javax.swing.BoxLayout.Y_AXIS));
 
         jTableOnline.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -179,6 +180,9 @@ public class gridOnline extends javax.swing.JPanel {
         jScrollPaneTableOnline.setViewportView(jTableOnline);
 
         jPanelTableOnline.add(jScrollPaneTableOnline);
+
+        jLabelTableOnlineRowCount.setText("Number of sessions displayed: ");
+        jPanelTableOnline.add(jLabelTableOnlineRowCount);
 
         add(jPanelTableOnline);
 
@@ -455,6 +459,7 @@ public class gridOnline extends javax.swing.JPanel {
         }
         int rowCount = jTableOnline.getRowCount() - 1;
         this.jTableOnlineSelectRow(rowCount);
+        updateRowCountInfo();
     }
 
     public int showCell(int row, int column) {
@@ -540,6 +545,10 @@ public class gridOnline extends javax.swing.JPanel {
         }
     }
 
+    public void updateRowCountInfo() {
+        this.jLabelTableOnlineRowCount.setText("Number of sessions displayed: " + this.jTableOnline.getRowCount());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jButtonClearCustomerFilter;
     public final javax.swing.JButton jButtonRefresh = new javax.swing.JButton();
@@ -558,6 +567,7 @@ public class gridOnline extends javax.swing.JPanel {
     public javax.swing.JLabel jLabelSessionID;
     public javax.swing.JLabel jLabelStartTIme;
     public javax.swing.JLabel jLabelStopTime;
+    public javax.swing.JLabel jLabelTableOnlineRowCount;
     public javax.swing.JLabel jLabelUpdateTime;
     public javax.swing.JLabel jLabelUsername;
     public javax.swing.JLabel jLabelUsernameAndFramedIPFilter;
