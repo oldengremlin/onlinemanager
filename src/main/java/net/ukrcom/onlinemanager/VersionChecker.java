@@ -140,12 +140,39 @@ public class VersionChecker {
     }
 
     private static void openInBrowser(String url) {
-        try {
-            Desktop.getDesktop().browse(new URI(url));
-        } catch (IOException | URISyntaxException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Could not open browser..\n\nOpen manually:\n" + url,
-                    "Error", JOptionPane.ERROR_MESSAGE);
+        // Спроба №1: стандартний Desktop (працює в 90% випадків)
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(new URI(url));
+                return;
+            } catch (IOException | URISyntaxException ignored) {
+                // тихо ігноруємо — йдемо до наступного способу
+            }
         }
+
+        // Спроба №2: xdg-open (Linux, найнадійніший спосіб)
+        String[] xdgCommands = {
+            "xdg-open", url,
+            "gnome-open", url,
+            "kde-open", url,
+            "sensible-browser", url,
+            "open", url // macOS fallback
+        };
+
+        for (String cmd : xdgCommands) {
+            try {
+                Runtime.getRuntime().exec(cmd);
+                return; // вдалося
+            } catch (IOException ignored) {
+                // не цей браузер — пробуємо наступний
+            }
+        }
+
+        // Якщо нічого не спрацювало — показуємо посилання користувачеві
+        JOptionPane.showMessageDialog(null,
+                "The browser could not be opened automatically.\n\n"
+                + "Please open manually.:\n" + url,
+                "Update available",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }
