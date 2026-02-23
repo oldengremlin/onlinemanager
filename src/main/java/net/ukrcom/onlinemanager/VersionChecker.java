@@ -140,39 +140,43 @@ public class VersionChecker {
     }
 
     private static void openInBrowser(String url) {
-        // Спроба №1: стандартний Desktop (працює в 90% випадків)
+        // 1. Спроба через Desktop (найкраще працює на Windows і macOS)
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI(url));
                 return;
             } catch (IOException | URISyntaxException ignored) {
-                // тихо ігноруємо — йдемо до наступного способу
+                // якщо не вийшло — пробуємо далі
             }
         }
 
-        // Спроба №2: xdg-open (Linux, найнадійніший спосіб)
-        String[] xdgCommands = {
-            "xdg-open", url,
-            "gnome-open", url,
-            "kde-open", url,
-            "sensible-browser", url,
-            "open", url // macOS fallback
+        // 2. Спроба через ProcessBuilder (Linux + сучасний спосіб)
+        String[][] commands = {
+            {"xdg-open", url},
+            {"sensible-browser", url},
+            {"gnome-open", url},
+            {"kde-open", url},
+            {"sensible-browser", url},
+            {"open", url} // macOS fallback
         };
 
-        for (String cmd : xdgCommands) {
+        for (String[] cmdArray : commands) {
             try {
-                Runtime.getRuntime().exec(cmd);
-                return; // вдалося
+                new ProcessBuilder(cmdArray)
+                        .inheritIO() // щоб не висіли процеси
+                        .start();
+                return;                 // вдалося запустити
             } catch (IOException ignored) {
-                // не цей браузер — пробуємо наступний
+                // ця команда не підходить — пробуємо наступну
             }
         }
 
-        // Якщо нічого не спрацювало — показуємо посилання користувачеві
+        // 3. Якщо нічого не спрацювало — просто показуємо посилання
         JOptionPane.showMessageDialog(null,
                 "The browser could not be opened automatically.\n\n"
                 + "Please open manually.:\n" + url,
                 "Update available",
                 JOptionPane.INFORMATION_MESSAGE);
     }
+
 }
