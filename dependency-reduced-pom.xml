@@ -65,7 +65,6 @@
               <winShortcut>true</winShortcut>
               <winMenu>true</winMenu>
               <winMenuGroup>NOC Tools</winMenuGroup>
-              <icon>${project.basedir}/src/main/resources/onlinemanager.ico</icon>
             </configuration>
           </execution>
           <execution>
@@ -133,7 +132,7 @@
     <jpackage.app.version>1.0</jpackage.app.version>
     <jpackage.skip.windows>${jpackage.skip}</jpackage.skip.windows>
     <jpackage.skip.rpm>${jpackage.skip}</jpackage.skip.rpm>
-    <buildNumber>00095</buildNumber>
+    <buildNumber>00097</buildNumber>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
