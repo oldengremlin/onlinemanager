@@ -32,37 +32,34 @@ public final class jMainFrame extends javax.swing.JFrame {
             VersionChecker.checkForUpdates(this);
         }
 
-        /*
-        System.err.println(
-                Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
-        );
-        System.err.println(
-                Toolkit.getDefaultToolkit().getImage(
-                        Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
-                )
-        );
-        this.setIconImage(
-                Toolkit.getDefaultToolkit().getImage(
-                        Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
-                )
-        );
-         */
         java.util.List<java.awt.Image> icons = new java.util.ArrayList<>();
         for (String size : new String[]{"16", "32", "64", "128", "256"}) {
             for (String ext : new String[]{"png", "ico"}) {
                 java.net.URL iconFileURL = Onlinemanager.class.getResource("/onlinemanager-" + size + "x" + size + "." + ext);
                 if (iconFileURL != null) {
-                    File iconFile = new java.io.File(iconFileURL.getPath());
-                    if (iconFile.exists()) {
-                        System.err.println(iconFileURL.getPath());
-                        icons.add(Toolkit.getDefaultToolkit().getImage(iconFileURL));
-                    }
+//                    File iconFile = new java.io.File(iconFileURL.getPath());
+//                    if (iconFile.exists()) {
+//                        System.err.println(iconFileURL.getPath());
+//                        icons.add(Toolkit.getDefaultToolkit().getImage(iconFileURL));
+//                    }
+                    icons.add(Toolkit.getDefaultToolkit().getImage(iconFileURL));
+                    System.err.println("✓ Icon loaded: " + iconFileURL);
                 }
 
             }
         }
+        if (icons.isEmpty()) {
+            java.net.URL fallback = getClass().getResource("/onlinemanager.png");
+            if (fallback != null) {
+                System.err.println("✓ Fallback PNG: " + fallback);
+                icons.add(Toolkit.getDefaultToolkit().getImage(fallback));
+            }
+        }
         if (!icons.isEmpty()) {
             this.setIconImages(icons);
+            System.err.println("✅ " + icons.size() + " 10 icons for the window are installed.");
+        } else {
+            System.err.println("❌ NO icons found in resources!");
         }
 
         this.timer = new Timer(this);
