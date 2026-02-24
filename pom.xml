@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <name>Ukrcom / DHCP / Online manager</name>
     <properties>
-        <buildNumber>00122</buildNumber>
+        <buildNumber>00124</buildNumber>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>net.ukrcom.onlinemanager.Onlinemanager</exec.mainClass>
         <maven.compiler.release>21</maven.compiler.release>
@@ -159,6 +159,7 @@
                             <winMenu>true</winMenu>
                             <winMenuGroup>NOC Tools</winMenuGroup>
                             <icon>${project.basedir}/src/main/resources/onlinemanager.ico</icon>
+                            <licensefile>${project.basedir}/LICENSE</licensefile>
                         </configuration>
                     </execution>
 
@@ -194,6 +195,7 @@
                             </description>
                             <resourceDir>src/main/resources</resourceDir>
                             <icon>${project.basedir}/src/main/resources/onlinemanager.png</icon>
+                            <licensefile>${project.basedir}/LICENSE</licensefile>
                         </configuration>
                     </execution>
 
