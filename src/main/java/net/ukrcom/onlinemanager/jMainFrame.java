@@ -31,6 +31,21 @@ public final class jMainFrame extends javax.swing.JFrame {
             VersionChecker.checkForUpdates(this);
         }
 
+        /*
+        System.err.println(
+                Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
+        );
+        System.err.println(
+                Toolkit.getDefaultToolkit().getImage(
+                        Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
+                )
+        );
+        this.setIconImage(
+                Toolkit.getDefaultToolkit().getImage(
+                        Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
+                )
+        );
+         */
         this.timer = new Timer(this);
         checkStateAutoRefresh();
         this.gridOnlinePanel.getRootPane().setDefaultButton(this.gridOnlinePanel.jButtonRefresh);
@@ -77,7 +92,9 @@ public final class jMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Online Manager");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/onlinemanager."+( SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(
+            Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
+        ));
         setMinimumSize(new java.awt.Dimension(800, 600));
         getContentPane().add(gridOnlinePanel, java.awt.BorderLayout.CENTER);
 
