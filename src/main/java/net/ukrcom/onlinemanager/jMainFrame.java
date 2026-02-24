@@ -45,16 +45,16 @@ public final class jMainFrame extends javax.swing.JFrame {
         }
 
         for (String ext : new String[]{"png", "ico"}) {
-            java.net.URL fallback = getClass().getResource("/onlinemanager." + ext);
-            if (fallback != null) {
-                System.err.println("✓ Fallback " + ext.toUpperCase() + ": " + fallback);
-                icons.add(Toolkit.getDefaultToolkit().getImage(fallback));
+            java.net.URL iconFileURL = getClass().getResource("/onlinemanager." + ext);
+            if (iconFileURL != null) {
+                System.err.println("✓ Fallback " + ext.toUpperCase() + ": " + iconFileURL);
+                icons.add(Toolkit.getDefaultToolkit().getImage(iconFileURL));
             }
         }
 
         if (!icons.isEmpty()) {
             this.setIconImages(icons);
-            System.err.println("✅ " + icons.size() + " 10 icons for the window are installed.");
+            System.err.println("✅ " + icons.size() + " icons for the window are installed.");
         } else {
             System.err.println("❌ NO icons found in resources!");
         }
