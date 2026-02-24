@@ -73,7 +73,7 @@ public class VersionChecker {
     /**
      * Читає версію з pom.properties (генерується jpackage)
      */
-    private static String getCurrentVersion() {
+    public static String getCurrentVersion() {
         try (InputStream is = Onlinemanager.class.getClassLoader().getResourceAsStream("META-INF/maven/net.ukr-com/onlinemanager/pom.properties")) {
 
             if (is == null) {

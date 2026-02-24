@@ -24,7 +24,13 @@ public final class jMainFrame extends javax.swing.JFrame {
         this.mainPanelVisible = true;
         this.jCutCopyPaste = new jCutCopyPaste();
         initComponents();
-        VersionChecker.checkForUpdates(this);
+
+        String version = VersionChecker.getCurrentVersion();
+        if (version != null) {
+            this.setTitle(this.getTitle() + " " + version);
+            VersionChecker.checkForUpdates(this);
+        }
+
         this.timer = new Timer(this);
         checkStateAutoRefresh();
         this.gridOnlinePanel.getRootPane().setDefaultButton(this.gridOnlinePanel.jButtonRefresh);
