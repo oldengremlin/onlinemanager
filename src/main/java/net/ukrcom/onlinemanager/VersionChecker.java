@@ -46,6 +46,7 @@ public class VersionChecker {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            // System.err.println("GitHub statusCode = " + response.statusCode());
             if (response.statusCode() == 200) {
                 String json = response.body();
                 String latestTag = extractTagFromJson(json);
