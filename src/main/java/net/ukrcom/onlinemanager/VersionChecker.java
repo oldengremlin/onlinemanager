@@ -35,6 +35,7 @@ public class VersionChecker {
         if (currentVersion == null || currentVersion.isEmpty()) {
             return;
         }
+        System.err.println("Current version: " + currentVersion.replace("v", "").trim());
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -48,9 +49,12 @@ public class VersionChecker {
             if (response.statusCode() == 200) {
                 String json = response.body();
                 String latestTag = extractTagFromJson(json);
+                if (latestTag == null || latestTag.isEmpty()) {
+                    return;
+                }
                 System.err.println("Latest version: " + latestTag.replace("v", "").trim());
 
-                if (latestTag != null && isNewerVersion(latestTag, currentVersion)) {
+                if (isNewerVersion(latestTag, currentVersion)) {
                     int choice = JOptionPane.showConfirmDialog(
                             parentFrame,
                             "New version available: " + latestTag + "\n\nOpen releases page?",
@@ -89,11 +93,7 @@ public class VersionChecker {
             System.out.println("GroupId: " + props.getProperty("groupId"));
             System.out.println("ArtifactId: " + props.getProperty("artifactId"));
              */
-            String version = props.getProperty("version");
-            if (version != null) {
-                System.err.println("Current version: " + version.replace("v", "").trim());
-            }
-            return version;
+            return props.getProperty("version");
         } catch (IOException e) {
             System.err.println("Failed to read pom.properties: " + e.getMessage());
             return null;
