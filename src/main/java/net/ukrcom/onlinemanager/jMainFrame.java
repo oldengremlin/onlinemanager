@@ -4,14 +4,16 @@
  */
 package net.ukrcom.onlinemanager;
 
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import javax.swing.JFrame;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  *
  * @author olden
  */
-public class jMainFrame extends javax.swing.JFrame {
+public final class jMainFrame extends javax.swing.JFrame {
 
     protected jCutCopyPaste jCutCopyPaste;
 
@@ -69,6 +71,7 @@ public class jMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Online Manager");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/onlinemanager."+( SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))));
         setMinimumSize(new java.awt.Dimension(800, 600));
         getContentPane().add(gridOnlinePanel, java.awt.BorderLayout.CENTER);
 
