@@ -5,6 +5,7 @@
 package net.ukrcom.onlinemanager;
 
 import java.awt.Toolkit;
+import java.io.File;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import org.apache.commons.lang3.SystemUtils;
@@ -46,6 +47,24 @@ public final class jMainFrame extends javax.swing.JFrame {
                 )
         );
          */
+        java.util.List<java.awt.Image> icons = new java.util.ArrayList<>();
+        for (String size : new String[]{"16", "32", "64", "128", "256"}) {
+            for (String ext : new String[]{"png", "ico"}) {
+                java.net.URL iconFileURL = Onlinemanager.class.getResource("/onlinemanager-" + size + "x" + size + "." + ext);
+                if (iconFileURL != null) {
+                    File iconFile = new java.io.File(iconFileURL.getPath());
+                    if (iconFile.exists()) {
+                        System.err.println(iconFileURL.getPath());
+                        icons.add(Toolkit.getDefaultToolkit().getImage(iconFileURL));
+                    }
+                }
+
+            }
+        }
+        if (!icons.isEmpty()) {
+            this.setIconImages(icons);
+        }
+
         this.timer = new Timer(this);
         checkStateAutoRefresh();
         this.gridOnlinePanel.getRootPane().setDefaultButton(this.gridOnlinePanel.jButtonRefresh);
@@ -92,9 +111,6 @@ public final class jMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Online Manager");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(
-            Onlinemanager.class.getResource("/onlinemanager." + (SystemUtils.IS_OS_WINDOWS ? "ico" : "png"))
-        ));
         setMinimumSize(new java.awt.Dimension(800, 600));
         getContentPane().add(gridOnlinePanel, java.awt.BorderLayout.CENTER);
 
