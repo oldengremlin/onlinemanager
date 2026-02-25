@@ -39,17 +39,6 @@
    /opt/onlinemanager/bin/onlinemanager
    ```
 
-### Конфігурація (onlinemanager.config.xml)
-    ```
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;jConfig&gt;
-    &lt;serverName&gt;1.2.3.4&lt;/serverName&gt;
-    &lt;databaseName&gt;radius&lt;/databaseName&gt;
-    &lt;username&gt;radius_ro&lt;/username&gt;
-    &lt;password&gt;supersecret&lt;/password&gt;
-&lt;/jConfig&gt;
-    ```
-
 ## Вимоги
 * Java 21 або вище
 * Доступ до бази Radius (MySQL)
