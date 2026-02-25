@@ -41,13 +41,13 @@
 
 ### Конфігурація (onlinemanager.config.xml)
     ``` xml
-<?xml version="1.0" encoding="UTF-8"?>
-<jConfig>
-    <serverName>94.125.121.10</serverName>
-    <databaseName>radius</databaseName>
-    <username>radius_ro</username>
-    <password>supersecret</password>
-</jConfig>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;jConfig&gt;
+    &lt;serverName&gt;1.2.3.4&lt;/serverName&gt;
+    &lt;databaseName&gt;radius&lt;/databaseName&gt;
+    &lt;username&gt;radius_ro&lt;/username&gt;
+    &lt;password&gt;supersecret&lt;/password&gt;
+&lt;/jConfig&gt;
     ```
 
 ## Вимоги
@@ -60,4 +60,4 @@
 Apache License 2.0. Див. [LICENSE](LICENSE)
 
 ### Автор
-Oleksandr Russkikh /aka Olden Gremlin <olden@ukr-com.net>
+Oleksandr Russkikh /aka Olden Gremlin &lt;olden@ukr-com.net&gt;
