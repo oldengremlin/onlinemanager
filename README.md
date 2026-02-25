@@ -40,7 +40,7 @@
    ```
 
 ### Конфігурація (onlinemanager.config.xml)
-    ``` xml
+    ```
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;jConfig&gt;
     &lt;serverName&gt;1.2.3.4&lt;/serverName&gt;
