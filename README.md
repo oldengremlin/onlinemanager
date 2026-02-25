@@ -25,8 +25,7 @@
 #### Windows (рекомендовано)
 1. Завантаж останній реліз → `Onlinemanager-x.x.xxxxx.exe`
 2. Розпакуй (або просто запусти)
-3. Поклади поруч файл `onlinemanager.config.xml` з параметрами підключення до бази
-4. Запусти exe
+3. Запусти exe
 
 #### Linux (Ubuntu / Debian)
 1. Завантаж останній реліз → `onlinemanager_x.x.xxxxx_amd64.deb`
