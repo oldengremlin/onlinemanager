@@ -379,9 +379,9 @@ public class JSetup extends javax.swing.JDialog {
         username = jTextFieldUsername.getText();
         password = String.valueOf(jPasswordFieldPassword.getPassword());
 
-        restServerName = jTextFieldServerName.getText();
-        restUsername = jTextFieldUsername.getText();
-        restPassword = String.valueOf(jPasswordFieldPassword.getPassword());
+        restServerName = jTextFieldRESTServerName.getText();
+        restUsername = jTextFieldRESTUsername.getText();
+        restPassword = String.valueOf(jPasswordFieldRESTPassword.getPassword());
 
         config = new jConfig(serverName, databaseName, username, password, restServerName, restUsername, restPassword);
         try {
