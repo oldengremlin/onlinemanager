@@ -4,6 +4,7 @@
  */
 package net.ukrcom.onlinemanager;
 
+import com.formdev.flatlaf.util.SystemInfo;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
@@ -24,19 +25,23 @@ public final class jMainFrame extends javax.swing.JFrame {
         this.mainPanelVisible = true;
         this.jCutCopyPaste = new jCutCopyPaste();
 
-        com.formdev.flatlaf.FlatLightLaf.setup();
+        if (SystemInfo.isWindows) {
+            com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme.setup();  // або FlatArcIJTheme для світлої
+        } else if (SystemInfo.isMacOS) {
+            com.formdev.flatlaf.themes.FlatMacDarkLaf.setup();              // нативна macOS Dark
+        } else {
+            com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme.setup();  // Linux зазвичай добре виглядає з Arc Dark
+        }
 
-//        // Темна тема замість світлої
-//        com.formdev.flatlaf.FlatDarkLaf.setup();
-//        // Або автоматично слідкувати за системною темою (Windows 11 / macOS)
-//        com.formdev.flatlaf.FlatLaf.setup(com.formdev.flatlaf.util.SystemInfo.isMacOS
-//                ? new com.formdev.flatlaf.themes.FlatMacDarkLaf()
-//                : new com.formdev.flatlaf.FlatDarkLaf());
-//        // Збільшити відступи в таблицях (дуже помітно)
-//        UIManager.put("Table.rowHeight", 28);
+        // Додати легку тінь на вікно (Windows 11 / macOS)
+        UIManager.put("RootPane.useRoundedPopup", true);
+        UIManager.put("PopupMenu.border", new javax.swing.border.LineBorder(new java.awt.Color(100, 100, 100, 100), 1));
+
+        UIManager.put("Table.rowHeight", 28); // таблиці виглядають значно краще
         UIManager.put("Table.intercellSpacing", new Dimension(1, 1));
 
         UIManager.put("defaultFont", UIManager.getFont("Label.font"));
+//        UIManager.put("Button.arc", 10); // округлені кнопки
 
         initComponents();
 

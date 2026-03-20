@@ -197,6 +197,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldRadiusID.setEditable(false);
         jTextFieldRadiusID.setBackground(new java.awt.Color(250, 250, 250));
+        jTextFieldRadiusID.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldRadiusID);
 
         jLabelUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -206,6 +207,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldUsername.setEditable(false);
         jTextFieldUsername.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldUsername.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldUsername);
 
         jLabelRouter.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -215,6 +217,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldRouter.setEditable(false);
         jTextFieldRouter.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldRouter.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldRouter);
 
         jLabelSessionID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -224,6 +227,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldSessionID.setEditable(false);
         jTextFieldSessionID.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldSessionID.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldSessionID);
 
         jLabelStartTIme.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -233,6 +237,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldStartTIme.setEditable(false);
         jTextFieldStartTIme.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldStartTIme.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldStartTIme);
 
         jLabelUpdateTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -242,6 +247,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldUpdateTime.setEditable(false);
         jTextFieldUpdateTime.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldUpdateTime.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldUpdateTime);
 
         jLabelStopTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -251,6 +257,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldStopTime.setEditable(false);
         jTextFieldStopTime.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldStopTime.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldStopTime);
 
         jLabelFramedIP.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -260,6 +267,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldFramedIP.setEditable(false);
         jTextFieldFramedIP.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldFramedIP.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldFramedIP);
 
         jLabelLinkTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -270,6 +278,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldLinkTime.setEditable(false);
         jTextFieldLinkTime.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldLinkTime.setForeground(new java.awt.Color(51, 51, 51));
         jTextFieldLinkTime.setToolTipText("Displays the time when the association between Username and Customer was made.");
         jPanelDetail.add(jTextFieldLinkTime);
 
@@ -280,6 +289,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldCustomerName.setEditable(false);
         jTextFieldCustomerName.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldCustomerName.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldCustomerName);
 
         jLabelCustomerLocation.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -289,6 +299,7 @@ public class gridOnline extends javax.swing.JPanel {
 
         jTextFieldCustomerLocation.setEditable(false);
         jTextFieldCustomerLocation.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldCustomerLocation.setForeground(new java.awt.Color(51, 51, 51));
         jPanelDetail.add(jTextFieldCustomerLocation);
 
         jPanelBottom.add(jPanelDetail);
