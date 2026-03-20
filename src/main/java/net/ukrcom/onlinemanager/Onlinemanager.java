@@ -21,7 +21,6 @@ public class Onlinemanager {
                 Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException e) {
                 System.err.println("MySQL JDBC Driver not found!");
-                Logger.getLogger(RadiusData.class.getName()).log(Level.SEVERE, null, e);
                 System.exit(1);
             }
             // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←

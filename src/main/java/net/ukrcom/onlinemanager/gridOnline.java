@@ -9,10 +9,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.font.TextAttribute;
-import java.sql.SQLException;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -445,7 +442,8 @@ public class gridOnline extends javax.swing.JPanel {
             System.err.print(jWhereOperation.getSelectedIndex() + " -> ");
             System.err.println(String.valueOf(jWhereOperation.getSelectedItem()));
              */
-            RadiusData radiusData = RadiusData.getInstance()
+//          RadiusData.getInstance()
+            RestApiClient.getInstance()
                     .getData(
                             (DefaultTableModel) jTableOnline.getModel(),
                             Integer.parseInt(this.jFormattedTextFieldDays.getText().trim()),
@@ -454,8 +452,8 @@ public class gridOnline extends javax.swing.JPanel {
                             this.jTextFieldCustomerFilter.getText().trim(),
                             this.jTextFieldUsernameAndFramedIPFilter.getText().trim()
                     );
-        } catch (SQLException ex) {
-            Logger.getLogger(gridOnline.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            System.getLogger(gridOnline.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         int rowCount = jTableOnline.getRowCount() - 1;
         this.jTableOnlineSelectRow(rowCount);

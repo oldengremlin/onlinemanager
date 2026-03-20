@@ -37,6 +37,19 @@ public class JSetup extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jLabelREST = new javax.swing.JLabel();
+        jPanelRESTConfig = new javax.swing.JPanel();
+        jLabelRESTServerName = new javax.swing.JLabel();
+        jTextFieldRESTServerName = new javax.swing.JTextField();
+        jButtonRESTServerName = new javax.swing.JButton();
+        jLabelRESTUsername = new javax.swing.JLabel();
+        jTextFieldRESTUsername = new javax.swing.JTextField();
+        jButtonRESTUsername = new javax.swing.JButton();
+        jLabelRESTPassword = new javax.swing.JLabel();
+        jPasswordFieldRESTPassword = new javax.swing.JPasswordField();
+        jButtonRESTPassword = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabelDatabase = new javax.swing.JLabel();
         jPanelDatabaseConfig = new javax.swing.JPanel();
         jLabelServerName = new javax.swing.JLabel();
         jTextFieldServerName = new javax.swing.JTextField();
@@ -57,17 +70,138 @@ public class JSetup extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Setup");
         setAlwaysOnTop(true);
-        setMaximumSize(new java.awt.Dimension(380, 160));
-        setMinimumSize(new java.awt.Dimension(380, 160));
+        setMaximumSize(getPreferredSize());
+        setMinimumSize(getPreferredSize());
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        setPreferredSize(new java.awt.Dimension(380, 200));
-        setSize(new java.awt.Dimension(380, 200));
+        setPreferredSize(new java.awt.Dimension(400, 350));
+        setSize(getPreferredSize());
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        jLabelREST.setText("Radius REST API for Onlinemanager");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(jLabelREST, gridBagConstraints);
+
+        jPanelRESTConfig.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanelRESTConfig.setLayout(new java.awt.GridBagLayout());
+
+        jLabelRESTServerName.setLabelFor(jLabelRESTServerName);
+        jLabelRESTServerName.setText("REST Server Name");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanelRESTConfig.add(jLabelRESTServerName, gridBagConstraints);
+
+        jTextFieldRESTServerName.setMinimumSize(new java.awt.Dimension(250, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanelRESTConfig.add(jTextFieldRESTServerName, gridBagConstraints);
+
+        jButtonRESTServerName.setText("❌");
+        jButtonRESTServerName.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonRESTServerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRESTServerNameActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanelRESTConfig.add(jButtonRESTServerName, gridBagConstraints);
+
+        jLabelRESTUsername.setLabelFor(jLabelRESTUsername);
+        jLabelRESTUsername.setText("REST Username");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanelRESTConfig.add(jLabelRESTUsername, gridBagConstraints);
+
+        jTextFieldRESTUsername.setPreferredSize(new java.awt.Dimension(250, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanelRESTConfig.add(jTextFieldRESTUsername, gridBagConstraints);
+
+        jButtonRESTUsername.setText("❌");
+        jButtonRESTUsername.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonRESTUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRESTUsernameActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanelRESTConfig.add(jButtonRESTUsername, gridBagConstraints);
+
+        jLabelRESTPassword.setLabelFor(jLabelRESTPassword);
+        jLabelRESTPassword.setText("REST Password");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanelRESTConfig.add(jLabelRESTPassword, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 2, 0);
+        jPanelRESTConfig.add(jPasswordFieldRESTPassword, gridBagConstraints);
+
+        jButtonRESTPassword.setText("❌");
+        jButtonRESTPassword.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jButtonRESTPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRESTPasswordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        jPanelRESTConfig.add(jButtonRESTPassword, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 2, 2, 2);
+        getContentPane().add(jPanelRESTConfig, gridBagConstraints);
+        getContentPane().add(jSeparator1, new java.awt.GridBagConstraints());
+
+        jLabelDatabase.setText("Radius Server (deprecated)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        getContentPane().add(jLabelDatabase, gridBagConstraints);
 
         jPanelDatabaseConfig.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanelDatabaseConfig.setLayout(new java.awt.GridBagLayout());
@@ -196,7 +330,7 @@ public class JSetup extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 2, 2, 2);
@@ -224,10 +358,9 @@ public class JSetup extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 10, 2);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(jPanelOkCancel, gridBagConstraints);
 
         pack();
@@ -238,7 +371,7 @@ public class JSetup extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
-        String serverName, databaseName, username, password;
+        String serverName, databaseName, username, password, restServerName, restUsername, restPassword;
         jConfig config;
 
         serverName = jTextFieldServerName.getText();
@@ -246,11 +379,18 @@ public class JSetup extends javax.swing.JDialog {
         username = jTextFieldUsername.getText();
         password = String.valueOf(jPasswordFieldPassword.getPassword());
 
-        config = new jConfig(serverName, databaseName, username, password);
+        restServerName = jTextFieldServerName.getText();
+        restUsername = jTextFieldUsername.getText();
+        restPassword = String.valueOf(jPasswordFieldPassword.getPassword());
+
+        config = new jConfig(serverName, databaseName, username, password, restServerName, restUsername, restPassword);
         try {
             new jConfigSerializing().save(config);
-            RadiusData.getInstance().reinit();
-        } catch (IOException | SQLException ex) {
+
+            RestApiClient.getInstance().login(restUsername, restPassword);
+//            RadiusData.getInstance().reinit();
+
+        } catch (Exception ex) {
             Logger.getLogger(JSetup.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -277,6 +417,18 @@ public class JSetup extends javax.swing.JDialog {
         loadConfig();
     }//GEN-LAST:event_formWindowActivated
 
+    private void jButtonRESTServerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRESTServerNameActionPerformed
+        jTextFieldRESTServerName.setText("");
+    }//GEN-LAST:event_jButtonRESTServerNameActionPerformed
+
+    private void jButtonRESTUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRESTUsernameActionPerformed
+        jTextFieldRESTUsername.setText("");
+    }//GEN-LAST:event_jButtonRESTUsernameActionPerformed
+
+    private void jButtonRESTPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRESTPasswordActionPerformed
+        jPasswordFieldRESTPassword.setText("");
+    }//GEN-LAST:event_jButtonRESTPasswordActionPerformed
+
     private void loadConfig() {
         try {
             jConfig config = new jConfigSerializing().load();
@@ -285,6 +437,10 @@ public class JSetup extends javax.swing.JDialog {
             jTextFieldDatabaseName.setText(config.getDatabaseName());
             jTextFieldUsername.setText(config.getUsername());
             jPasswordFieldPassword.setText(config.getPassword());
+
+            jTextFieldRESTServerName.setText(config.getRestServerName());
+            jTextFieldRESTUsername.setText(config.getRestUsername());
+            jPasswordFieldRESTPassword.setText(config.getRestPassword());
 
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(JSetup.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,16 +452,29 @@ public class JSetup extends javax.swing.JDialog {
     private javax.swing.JButton jButtonDatabaseName;
     private javax.swing.JButton jButtonOk;
     private javax.swing.JButton jButtonPassword;
+    private javax.swing.JButton jButtonRESTPassword;
+    private javax.swing.JButton jButtonRESTServerName;
+    private javax.swing.JButton jButtonRESTUsername;
     private javax.swing.JButton jButtonServerName;
     private javax.swing.JButton jButtonUsername;
+    private javax.swing.JLabel jLabelDatabase;
     private javax.swing.JLabel jLabelDatabaseName;
     private javax.swing.JLabel jLabelPassword;
+    private javax.swing.JLabel jLabelREST;
+    private javax.swing.JLabel jLabelRESTPassword;
+    private javax.swing.JLabel jLabelRESTServerName;
+    private javax.swing.JLabel jLabelRESTUsername;
     private javax.swing.JLabel jLabelServerName;
     private javax.swing.JLabel jLabelUsername;
     private javax.swing.JPanel jPanelDatabaseConfig;
     private javax.swing.JPanel jPanelOkCancel;
+    private javax.swing.JPanel jPanelRESTConfig;
     private javax.swing.JPasswordField jPasswordFieldPassword;
+    private javax.swing.JPasswordField jPasswordFieldRESTPassword;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextFieldDatabaseName;
+    private javax.swing.JTextField jTextFieldRESTServerName;
+    private javax.swing.JTextField jTextFieldRESTUsername;
     private javax.swing.JTextField jTextFieldServerName;
     private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables

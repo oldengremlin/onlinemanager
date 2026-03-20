@@ -5,6 +5,8 @@
 package net.ukrcom.onlinemanager;
 
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  *
@@ -12,19 +14,27 @@ import java.io.Serializable;
  */
 public class jConfig implements Serializable {
 
-    protected String serverName;
-    protected String databaseName;
-    protected String username;
-    protected String password;
+    private String serverName;
+    private String databaseName;
+    private String username;
+    private String password;
+    private String restserverName;
+    private String restusername;
+    private String restpassword;
+
+    private String restApiUrl;
 
     public jConfig() {
     }
 
-    public jConfig(String sn, String db, String un, String pw) {
+    public jConfig(String sn, String db, String un, String pw, String rsn, String run, String rpw) {
         this.serverName = sn;
         this.databaseName = db;
         this.username = un;
         this.password = pw;
+        this.restserverName = rsn;
+        this.restusername = run;
+        this.restpassword = rpw;
     }
 
     public String getServerName() {
@@ -57,6 +67,40 @@ public class jConfig implements Serializable {
 
     public void setPassword(String pw) {
         this.password = pw;
+    }
+
+    public String getRestServerName() {
+        return this.restserverName;
+    }
+
+    public void setRestServerName(String sn) {
+        this.restserverName = sn;
+        this.restApiUrl = "https://".concat(sn);
+    }
+
+    public String getRestUsername() {
+        return this.restusername;
+    }
+
+    public void setRestUsername(String un) {
+        this.restusername = un;
+    }
+
+    public String getRestPassword() {
+        return this.restpassword;
+    }
+
+    public void setRestPassword(String pw) {
+        this.restpassword = pw;
+    }
+
+    public String getRestApiUrl() {
+        return restApiUrl;
+    }
+
+    public void setRestApiUrl(String url) throws URISyntaxException {
+        this.restApiUrl = url;
+        this.restserverName = new URI(this.restApiUrl).getHost();
     }
 
 }

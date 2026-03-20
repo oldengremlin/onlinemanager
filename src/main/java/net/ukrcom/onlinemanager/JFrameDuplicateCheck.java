@@ -422,12 +422,12 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
 
         if (!SQL.isBlank()) {
             try {
-                RadiusData radiusData = RadiusData.getInstance()
+                RestApiClient.getInstance()
                         .correctionAcctStopTime(
                                 Long.valueOf(this.currentRadAcctID),
                                 this.candidateAcctStopTime
                         );
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -447,11 +447,11 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
 
     private void jTableDuplicateSessionsLoadData() {
         try {
-            RadiusData radiusData = RadiusData.getInstance()
+            RestApiClient.getInstance()
                     .getDuplicateData(
                             (DefaultTableModel) this.jTableDuplicateSessions.getModel()
                     );
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -487,12 +487,12 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         this.candidateAcctStopTime = null;
 
         try {
-            RadiusData radiusData = RadiusData.getInstance()
+            RestApiClient.getInstance()
                     .getDuplicateSessions(
                             (DefaultTableModel) jTableUsernameDetail.getModel(),
                             this.currentUsername
                     );
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -511,14 +511,14 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         this.currentAcctStartTime = this.jTableUsernameDetail.getValueAt(selectedRow, 2).toString();
 
         try {
-            RadiusData radiusData = RadiusData.getInstance()
+            RestApiClient.getInstance()
                     .getAcctStopTimeCandidate(
                             (DefaultTableModel) this.jTableSessionFoundByUsername.getModel(),
                             this.currentAcctStartTime,
                             this.currentUsername,
                             this.currentFramedIPAddress
                     );
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(JFrameDuplicateCheck.class.getName()).log(Level.SEVERE, null, ex);
         }
 

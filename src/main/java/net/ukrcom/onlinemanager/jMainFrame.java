@@ -6,6 +6,7 @@ package net.ukrcom.onlinemanager;
 
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import org.apache.commons.lang3.SystemUtils;
@@ -223,8 +224,9 @@ public final class jMainFrame extends javax.swing.JFrame {
 
     private void Exit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Exit
         try {
-            RadiusData.getInstance().closeConnections();
-        } catch (SQLException ignored) {
+            RestApiClient.getInstance().logout();
+        } catch (Exception ex) {
+            System.getLogger(jMainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         System.exit(0);
     }//GEN-LAST:event_Exit
@@ -331,8 +333,9 @@ public final class jMainFrame extends javax.swing.JFrame {
             timer.stop();
         }
         try {
-            RadiusData.getInstance().closeConnections();
-        } catch (SQLException ignored) {
+            RestApiClient.getInstance().logout();
+        } catch (Exception ex) {
+            System.getLogger(jMainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         super.dispose();
     }

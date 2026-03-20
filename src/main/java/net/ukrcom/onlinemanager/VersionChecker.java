@@ -4,6 +4,7 @@
  */
 package net.ukrcom.onlinemanager;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -101,18 +103,19 @@ public class VersionChecker {
         }
     }
 
-    private static String extractTagFromJson(String json) {
-        String key = "\"tag_name\":\"";
-        int start = json.indexOf(key);
-        if (start == -1) {
-            return null;
-        }
-        start += key.length();
-        int end = json.indexOf("\"", start);
-        if (end == -1) {
-            return null;
-        }
-        return json.substring(start, end);
+    private static String extractTagFromJson(String json) throws JsonProcessingException {
+//        String key = "\"tag_name\":\"";
+//        int start = json.indexOf(key);
+//        if (start == -1) {
+//            return null;
+//        }
+//        start += key.length();
+//        int end = json.indexOf("\"", start);
+//        if (end == -1) {
+//            return null;
+//        }
+//        return json.substring(start, end);
+        return new ObjectMapper().readTree(json).path("tag_name").asText(null);
     }
 
     private static boolean isNewerVersion(String latest, String current) {
