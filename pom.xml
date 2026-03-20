@@ -251,6 +251,7 @@
                             <hideMethodParams>true</hideMethodParams>
                             <useShortClassNames>true</useShortClassNames>
                             <blacklistRegexp>.*BeanInfo.*</blacklistRegexp>
+                            <hideFieldsByRegexp>.*jLabel.*|.*jPanel.*|.*jTextField.*|.*jTextPane.*|.*jButton.*|.*jScroll.*|.*jTable.*|.*jMenu.*|.*jSeparator.*|.*jPassword.*|.*jCheck.*|.*jCombo.*|.*jFormatt.*</hideFieldsByRegexp>
                         </configuration>
                     </execution>   
                 </executions>
