@@ -118,7 +118,7 @@ public class gridOnline extends javax.swing.JPanel {
         jTextFieldCustomerFilter = new javax.swing.JTextField();
         jButtonClearCustomerFilter = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setPreferredSize(new java.awt.Dimension(1000, 400));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -183,12 +183,12 @@ public class gridOnline extends javax.swing.JPanel {
 
         add(jPanelTableOnline);
 
+        jPanelBottom.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanelBottom.setMaximumSize(new java.awt.Dimension(32767, 320));
         jPanelBottom.setMinimumSize(new java.awt.Dimension(1046, 320));
         jPanelBottom.setPreferredSize(new java.awt.Dimension(1046, 320));
         jPanelBottom.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanelDetail.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 1, 5));
         jPanelDetail.setLayout(new java.awt.GridLayout(11, 2, 4, 2));
 
         jLabelRadiusID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);

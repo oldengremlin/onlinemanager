@@ -4,12 +4,10 @@
  */
 package net.ukrcom.onlinemanager;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import javax.swing.JFrame;
-import org.apache.commons.lang3.SystemUtils;
+import javax.swing.UIManager;
 
 /**
  *
@@ -25,6 +23,21 @@ public final class jMainFrame extends javax.swing.JFrame {
     public jMainFrame() {
         this.mainPanelVisible = true;
         this.jCutCopyPaste = new jCutCopyPaste();
+
+        com.formdev.flatlaf.FlatLightLaf.setup();
+
+//        // Темна тема замість світлої
+//        com.formdev.flatlaf.FlatDarkLaf.setup();
+//        // Або автоматично слідкувати за системною темою (Windows 11 / macOS)
+//        com.formdev.flatlaf.FlatLaf.setup(com.formdev.flatlaf.util.SystemInfo.isMacOS
+//                ? new com.formdev.flatlaf.themes.FlatMacDarkLaf()
+//                : new com.formdev.flatlaf.FlatDarkLaf());
+//        // Збільшити відступи в таблицях (дуже помітно)
+//        UIManager.put("Table.rowHeight", 28);
+        UIManager.put("Table.intercellSpacing", new Dimension(1, 1));
+
+        UIManager.put("defaultFont", UIManager.getFont("Label.font"));
+
         initComponents();
 
         String version = VersionChecker.getCurrentVersion();
