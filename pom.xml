@@ -248,6 +248,9 @@
                             <addJPAAnnotations>false</addJPAAnnotations>
                             <hideFields>false</hideFields>
                             <hideMethods>false</hideMethods>
+                            <hideMethodParams>true</hideMethodParams>
+                            <useShortClassNames>true</useShortClassNames>
+                            <blacklistRegexp>.*BeanInfo.*</blacklistRegexp>
                         </configuration>
                     </execution>   
                 </executions>
