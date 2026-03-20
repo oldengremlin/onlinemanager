@@ -147,8 +147,11 @@
               <hideMethods>false</hideMethods>
               <hideMethodParams>true</hideMethodParams>
               <useShortClassNames>true</useShortClassNames>
+              <useShortClassNamesInFieldsAndMethods>true</useShortClassNamesInFieldsAndMethods>
+              <enableAsciidocWrapper>true</enableAsciidocWrapper>
+              <enableMarkdownWrapper>true</enableMarkdownWrapper>
               <blacklistRegexp>.*BeanInfo.*</blacklistRegexp>
-              <hideFieldsByRegexp>.*jLabel.*|.*jPanel.*|.*jTextField.*|.*jTextPane.*|.*jButton.*|.*jScroll.*|.*jTable.*|.*jMenu.*|.*jSeparator.*|.*jPassword.*|.*jCheck.*|.*jCombo.*|.*jFormatt.*</hideFieldsByRegexp>
+              <fieldBlacklistRegexp>.*jLabel.*|.*jPanel.*|.*jTextField.*|.*jTextPane.*|.*jButton.*|.*jScroll.*|.*jTable.*|.*jMenu.*|.*jSeparator.*|.*jPassword.*|.*jCheck.*|.*jCombo.*|.*jFormatt.*</fieldBlacklistRegexp>
             </configuration>
           </execution>
         </executions>

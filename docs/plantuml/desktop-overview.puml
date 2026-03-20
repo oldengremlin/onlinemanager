@@ -1,3 +1,6 @@
+```plantuml
+[plantuml,desktop-overview.puml.png,png]
+----
 @startuml
 
 class Html2Text {
@@ -14,34 +17,6 @@ class JFrameDuplicateCheck {
 	{field} -currentFramedIPAddress : String
 	{field} -currentRadAcctID : Long
 	{field} -currentUsername : String
-	{field} -jButtonRequestCorrection : JButton
-	{field} -jLabelDuplicateSessions : JLabel
-	{field} -jLabelRequestCorrection : JLabel
-	{field} -jLabelSessionFoundByUsername : JLabel
-	{field} -jLabelUsernameDetail : JLabel
-	{field} -jMenu1 : JMenu
-	{field} -jMenuBar1 : JMenuBar
-	{field} -jMenuEdit : JMenu
-	{field} -jMenuFile : JMenu
-	{field} -jMenuItem1 : JMenuItem
-	{field} -jMenuItemClose : JMenuItem
-	{field} -jMenuItemCopy : JMenuItem
-	{field} -jMenuItemCut : JMenuItem
-	{field} -jMenuItemPaste : JMenuItem
-	{field} -jMenuItemSelectAll : JMenuItem
-	{field} -jPanelDetailedList : JPanel
-	{field} -jPanelDuplicateSessions : JPanel
-	{field} -jPanelSessionAnalyzer : JPanel
-	{field} -jPanelSessionsList : JPanel
-	{field} -jScrollPaneDuplicateSessions : JScrollPane
-	{field} -jScrollPaneRequestCorrection : JScrollPane
-	{field} -jScrollPaneSessionFoundByUsername : JScrollPane
-	{field} -jScrollPaneUsernameDetail : JScrollPane
-	{field} -jSeparator : Separator
-	{field} -jTableDuplicateSessions : JTable
-	{field} -jTableSessionFoundByUsername : JTable
-	{field} -jTableUsernameDetail : JTable
-	{field} -jTextPaneRequestCorrection : JTextPane
 	{method} -initComponents () : void
 	{method} -jButtonRequestCorrectionActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItem1ActionPerformed ( paramActionEvent1 : ActionEvent ) : void
@@ -61,35 +36,6 @@ class JFrameDuplicateCheck {
 
 
 class JSetup {
-	{field} -jButtonCancel : JButton
-	{field} -jButtonDatabaseName : JButton
-	{field} -jButtonOk : JButton
-	{field} -jButtonPassword : JButton
-	{field} -jButtonRESTPassword : JButton
-	{field} -jButtonRESTServerName : JButton
-	{field} -jButtonRESTUsername : JButton
-	{field} -jButtonServerName : JButton
-	{field} -jButtonUsername : JButton
-	{field} -jLabelDatabase : JLabel
-	{field} -jLabelDatabaseName : JLabel
-	{field} -jLabelPassword : JLabel
-	{field} -jLabelREST : JLabel
-	{field} -jLabelRESTPassword : JLabel
-	{field} -jLabelRESTServerName : JLabel
-	{field} -jLabelRESTUsername : JLabel
-	{field} -jLabelServerName : JLabel
-	{field} -jLabelUsername : JLabel
-	{field} -jPanelDatabaseConfig : JPanel
-	{field} -jPanelOkCancel : JPanel
-	{field} -jPanelRESTConfig : JPanel
-	{field} -jPasswordFieldPassword : JPasswordField
-	{field} -jPasswordFieldRESTPassword : JPasswordField
-	{field} -jSeparator1 : JSeparator
-	{field} -jTextFieldDatabaseName : JTextField
-	{field} -jTextFieldRESTServerName : JTextField
-	{field} -jTextFieldRESTUsername : JTextField
-	{field} -jTextFieldServerName : JTextField
-	{field} -jTextFieldUsername : JTextField
 	{field} -owner : JFrame
 	{field} -setup : JFrame
 	{method} -formWindowActivated ( paramWindowEvent1 : WindowEvent ) : void
@@ -150,50 +96,6 @@ class VersionChecker {
 
 
 class gridOnline {
-	{field} +jButtonClearCustomerFilter : JButton
-	{field} +jButtonRefresh : JButton
-	{field} +jButtonUsernameAndFramedIPFilter : JButton
-	{field} +jCheckBoxOnline : JCheckBox
-	{field} +jFormattedTextFieldDays : JFormattedTextField
-	{field} +jLabelCustomerFilter : JLabel
-	{field} +jLabelCustomerLocation : JLabel
-	{field} +jLabelCustomerName : JLabel
-	{field} +jLabelFilterLastDays1 : JLabel
-	{field} +jLabelFilterLastDays2 : JLabel
-	{field} +jLabelFramedIP : JLabel
-	{field} +jLabelLinkTime : JLabel
-	{field} +jLabelRadiusID : JLabel
-	{field} +jLabelRouter : JLabel
-	{field} +jLabelSessionID : JLabel
-	{field} +jLabelStartTIme : JLabel
-	{field} +jLabelStopTime : JLabel
-	{field} +jLabelTableOnlineRowCount : JLabel
-	{field} +jLabelUpdateTime : JLabel
-	{field} +jLabelUsername : JLabel
-	{field} +jLabelUsernameAndFramedIPFilter : JLabel
-	{field} +jPanelBottom : JPanel
-	{field} +jPanelCustomerFilter : JPanel
-	{field} +jPanelDetail : JPanel
-	{field} +jPanelFilter : JPanel
-	{field} +jPanelLastDays : JPanel
-	{field} +jPanelOnlyActiveFilter : JPanel
-	{field} +jPanelTableOnline : JPanel
-	{field} +jPanelUsernameAndFramedIPFilter : JPanel
-	{field} +jScrollPaneTableOnline : JScrollPane
-	{field} +jTableOnline : JTable
-	{field} +jTextFieldCustomerFilter : JTextField
-	{field} +jTextFieldCustomerLocation : JTextField
-	{field} +jTextFieldCustomerName : JTextField
-	{field} +jTextFieldFramedIP : JTextField
-	{field} +jTextFieldLinkTime : JTextField
-	{field} +jTextFieldRadiusID : JTextField
-	{field} +jTextFieldRouter : JTextField
-	{field} +jTextFieldSessionID : JTextField
-	{field} +jTextFieldStartTIme : JTextField
-	{field} +jTextFieldStopTime : JTextField
-	{field} +jTextFieldUpdateTime : JTextField
-	{field} +jTextFieldUsername : JTextField
-	{field} +jTextFieldUsernameAndFramedIPFilter : JTextField
 	{field} +jWhereOperation : JComboBox
 	{method} -initComponents () : void
 	{method} -jButtonClearCustomerFilterActionPerformed ( paramActionEvent1 : ActionEvent ) : void
@@ -236,12 +138,7 @@ class jCutCopyPaste {
 	{field} +actionCut : CutAction
 	{field} +actionPaste : PasteAction
 	{field} +actionSelectAll : SelectAllAction
-	{field} -jMenuItemPopupCopy : JMenuItem
-	{field} +jMenuItemPopupCut : JMenuItem
-	{field} +jMenuItemPopupPaste : JMenuItem
-	{field} -jMenuItemPopupSelectAll : JMenuItem
 	{field} +jPopupMenu : JPopupMenu
-	{field} -jSeparator1 : Separator
 	{method} -initComponents () : void
 	{method} -jMenuItemPopupCopyActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItemPopupCutActionPerformed ( paramActionEvent1 : ActionEvent ) : void
@@ -252,26 +149,7 @@ class jCutCopyPaste {
 
 class jMainFrame {
 	{field} -duplicateCheck : JFrame
-	{field} -jCheckBoxMenuItem1 : JCheckBoxMenuItem
-	{field} #jCheckBoxMenuItemAutoRefresh : JCheckBoxMenuItem
 	{field} -jMainMenuBar : JMenuBar
-	{field} -jMenuEdit : JMenu
-	{field} -jMenuFile : JMenu
-	{field} -jMenuItem1 : JMenuItem
-	{field} -jMenuItem2 : JMenuItem
-	{field} -jMenuItemDuplicateCheck : JMenuItem
-	{field} -jMenuItemEditCopy : JMenuItem
-	{field} -jMenuItemEditCut : JMenuItem
-	{field} -jMenuItemEditPaste : JMenuItem
-	{field} -jMenuItemExit : JMenuItem
-	{field} -jMenuItemMainPanel : JMenuItem
-	{field} -jMenuItemResetAndRefresh : JMenuItem
-	{field} -jMenuItemSelectAll : JMenuItem
-	{field} -jMenuItemSetup : JMenuItem
-	{field} -jMenuRefresh : JMenu
-	{field} -jMenuWindow : JMenu
-	{field} -jSeparator1 : Separator
-	{field} -jSeparator3 : Separator
 	{field} -mainPanelVisible : boolean
 	{method} -Exit ( paramActionEvent1 : ActionEvent ) : void
 	{method} -checkStateAutoRefresh () : void
@@ -304,3 +182,5 @@ jMainFrame -->  jCutCopyPaste : jCutCopyPaste
 
 
 @enduml
+----
+```
