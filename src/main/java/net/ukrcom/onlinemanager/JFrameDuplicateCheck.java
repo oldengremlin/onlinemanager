@@ -463,7 +463,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
                 && this.currentUsername == (String) this.jTableDuplicateSessions.getValueAt(selectedRow, 0)) {
             return;
         }
-        if (this.jTableDuplicateSessions.getRowCount() < 0) {
+        if (selectedRow < 0 || selectedRow >= this.jTableDuplicateSessions.getRowCount()) {
             return;
         }
 
