@@ -104,17 +104,6 @@ public class VersionChecker {
     }
 
     private static String extractTagFromJson(String json) throws JsonProcessingException {
-//        String key = "\"tag_name\":\"";
-//        int start = json.indexOf(key);
-//        if (start == -1) {
-//            return null;
-//        }
-//        start += key.length();
-//        int end = json.indexOf("\"", start);
-//        if (end == -1) {
-//            return null;
-//        }
-//        return json.substring(start, end);
         return new ObjectMapper().readTree(json).path("tag_name").asText(null);
     }
 

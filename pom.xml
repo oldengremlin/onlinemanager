@@ -225,10 +225,7 @@
                     <persist>true</persist>
                 </configuration>
             </plugin>
-
-
         </plugins>
-               
     </build>
     <scm>
         <connection>scm:git:git@github.com:oldengremlin/onlinemanager.git</connection>

@@ -174,23 +174,13 @@ public class RestApiClient {
 
     // ====================== СПІЛЬНА ЛОГІКА POST ======================
     private JsonNode post(String path, String body) throws IOException, InterruptedException {
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + path))
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .header("Authorization", "Bearer " + token)
-                .POST(HttpRequest.BodyPublishers.ofString(body))
-                .timeout(Duration.ofSeconds(30))
-                .build();
-        HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-        JsonNode root = mapper.readTree(resp.body());
-
+        JsonNode root = buildRequest(path, body);
         if ("error".equals(root.path("status").asText())) {
             try {
                 // спробуємо перелогінитись один раз
                 jConfig config = new jConfigSerializing().load();
                 if (login(config.getRestUsername(), config.getRestPassword())) {
-                    resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-                    root = mapper.readTree(resp.body());
+                    root = buildRequest(path, body);
                 }
             } catch (ClassNotFoundException ex) {
                 System.getLogger(RestApiClient.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -200,7 +190,21 @@ public class RestApiClient {
         if (!"success".equals(root.path("status").asText())) {
             throw new IOException("REST error: " + root.path("error").asText());
         }
+
         return root.get("data");
+    }
+
+    private JsonNode buildRequest(String path, String body) throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + path))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Authorization", "Bearer " + token)
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .timeout(Duration.ofSeconds(30))
+                .build();
+        HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
+        JsonNode root = mapper.readTree(resp.body());
+        return root;
     }
 
     private static String encode(String s) {
