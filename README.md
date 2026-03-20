@@ -38,6 +38,10 @@
    /opt/onlinemanager/bin/onlinemanager
    ```
 
+## Архітектура
+
+![Desktop Overview](docs/plantuml/desktop-overview.svg)
+
 ## Вимоги
 * Java 21 або вище
 * Доступ до бази Radius (MySQL)

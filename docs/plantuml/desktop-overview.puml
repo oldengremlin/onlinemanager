@@ -1,0 +1,311 @@
+@startuml
+
+class net.ukrcom.onlinemanager.Html2Text {
+	{field} ~s : StringBuffer
+	{method} +getText () : String
+	{method} +handleText ( param[C1 : [C , paramint2 : int ) : void
+	{method} +parse ( paramReader1 : java.io.Reader ) : void
+}
+
+
+class net.ukrcom.onlinemanager.JFrameDuplicateCheck {
+	{field} -candidateAcctStopTime : String
+	{field} -currentAcctStartTime : String
+	{field} -currentFramedIPAddress : String
+	{field} -currentRadAcctID : Long
+	{field} -currentUsername : String
+	{field} -jButtonRequestCorrection : javax.swing.JButton
+	{field} -jLabelDuplicateSessions : javax.swing.JLabel
+	{field} -jLabelRequestCorrection : javax.swing.JLabel
+	{field} -jLabelSessionFoundByUsername : javax.swing.JLabel
+	{field} -jLabelUsernameDetail : javax.swing.JLabel
+	{field} -jMenu1 : javax.swing.JMenu
+	{field} -jMenuBar1 : javax.swing.JMenuBar
+	{field} -jMenuEdit : javax.swing.JMenu
+	{field} -jMenuFile : javax.swing.JMenu
+	{field} -jMenuItem1 : javax.swing.JMenuItem
+	{field} -jMenuItemClose : javax.swing.JMenuItem
+	{field} -jMenuItemCopy : javax.swing.JMenuItem
+	{field} -jMenuItemCut : javax.swing.JMenuItem
+	{field} -jMenuItemPaste : javax.swing.JMenuItem
+	{field} -jMenuItemSelectAll : javax.swing.JMenuItem
+	{field} -jPanelDetailedList : javax.swing.JPanel
+	{field} -jPanelDuplicateSessions : javax.swing.JPanel
+	{field} -jPanelSessionAnalyzer : javax.swing.JPanel
+	{field} -jPanelSessionsList : javax.swing.JPanel
+	{field} -jScrollPaneDuplicateSessions : javax.swing.JScrollPane
+	{field} -jScrollPaneRequestCorrection : javax.swing.JScrollPane
+	{field} -jScrollPaneSessionFoundByUsername : javax.swing.JScrollPane
+	{field} -jScrollPaneUsernameDetail : javax.swing.JScrollPane
+	{field} -jSeparator : javax.swing.JPopupMenu$Separator
+	{field} -jTableDuplicateSessions : javax.swing.JTable
+	{field} -jTableSessionFoundByUsername : javax.swing.JTable
+	{field} -jTableUsernameDetail : javax.swing.JTable
+	{field} -jTextPaneRequestCorrection : javax.swing.JTextPane
+	{method} -initComponents () : void
+	{method} -jButtonRequestCorrectionActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItem1ActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemCloseActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemCopyActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemCutActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemPasteActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemSelectAllActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jTableDuplicateSessionsKeyReleased ( paramKeyEvent1 : java.awt.event.KeyEvent ) : void
+	{method} -jTableDuplicateSessionsLoadData () : void
+	{method} -jTableDuplicateSessionsMouseClicked ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} -jTableDuplicateSessionsSelectRow ( paramint1 : int ) : void
+	{method} -jTableUsernameDetailKeyReleased ( paramKeyEvent1 : java.awt.event.KeyEvent ) : void
+	{method} -jTableUsernameDetailMouseClicked ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} -jTableUsernameDetailSelectRow ( paramint1 : int ) : void
+}
+
+
+class net.ukrcom.onlinemanager.JSetup {
+	{field} -jButtonCancel : javax.swing.JButton
+	{field} -jButtonDatabaseName : javax.swing.JButton
+	{field} -jButtonOk : javax.swing.JButton
+	{field} -jButtonPassword : javax.swing.JButton
+	{field} -jButtonRESTPassword : javax.swing.JButton
+	{field} -jButtonRESTServerName : javax.swing.JButton
+	{field} -jButtonRESTUsername : javax.swing.JButton
+	{field} -jButtonServerName : javax.swing.JButton
+	{field} -jButtonUsername : javax.swing.JButton
+	{field} -jLabelDatabase : javax.swing.JLabel
+	{field} -jLabelDatabaseName : javax.swing.JLabel
+	{field} -jLabelPassword : javax.swing.JLabel
+	{field} -jLabelREST : javax.swing.JLabel
+	{field} -jLabelRESTPassword : javax.swing.JLabel
+	{field} -jLabelRESTServerName : javax.swing.JLabel
+	{field} -jLabelRESTUsername : javax.swing.JLabel
+	{field} -jLabelServerName : javax.swing.JLabel
+	{field} -jLabelUsername : javax.swing.JLabel
+	{field} -jPanelDatabaseConfig : javax.swing.JPanel
+	{field} -jPanelOkCancel : javax.swing.JPanel
+	{field} -jPanelRESTConfig : javax.swing.JPanel
+	{field} -jPasswordFieldPassword : javax.swing.JPasswordField
+	{field} -jPasswordFieldRESTPassword : javax.swing.JPasswordField
+	{field} -jSeparator1 : javax.swing.JSeparator
+	{field} -jTextFieldDatabaseName : javax.swing.JTextField
+	{field} -jTextFieldRESTServerName : javax.swing.JTextField
+	{field} -jTextFieldRESTUsername : javax.swing.JTextField
+	{field} -jTextFieldServerName : javax.swing.JTextField
+	{field} -jTextFieldUsername : javax.swing.JTextField
+	{field} -owner : javax.swing.JFrame
+	{field} -setup : javax.swing.JFrame
+	{method} -formWindowActivated ( paramWindowEvent1 : java.awt.event.WindowEvent ) : void
+	{method} -initComponents () : void
+	{method} -jButtonCancelActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonDatabaseNameActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonOkActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonPasswordActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonRESTPasswordActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonRESTServerNameActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonRESTUsernameActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonServerNameActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonUsernameActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -loadConfig () : void
+}
+
+
+class net.ukrcom.onlinemanager.Onlinemanager {
+	{method}  {static} +main ( paramString;1 : [Ljava.lang.String; ) : void
+}
+
+
+class net.ukrcom.onlinemanager.RestApiClient {
+	{field} -baseUrl : String
+	{field} -http : java.net.http.HttpClient
+	{field} -mapper : com.fasterxml.jackson.databind.ObjectMapper
+	{field} -token : String
+	{method} -buildRequest ( paramString1 : String , paramString2 : String ) : com.fasterxml.jackson.databind.JsonNode
+	{method} +correctionAcctStopTime ( paramLong1 : Long , paramString2 : String ) : net.ukrcom.onlinemanager.RestApiClient
+	{method}  {static} -encode ( paramString1 : String ) : String
+	{method} +getAcctStopTimeCandidate ( paramDefaultTableModel1 : javax.swing.table.DefaultTableModel , paramString2 : String , paramString3 : String , paramString4 : String ) : net.ukrcom.onlinemanager.RestApiClient
+	{method} +getData ( paramDefaultTableModel1 : javax.swing.table.DefaultTableModel , paramint2 : int , paramboolean3 : boolean , paramint4 : int , paramString5 : String , paramString6 : String ) : net.ukrcom.onlinemanager.RestApiClient
+	{method} +getDuplicateData ( paramDefaultTableModel1 : javax.swing.table.DefaultTableModel ) : net.ukrcom.onlinemanager.RestApiClient
+	{method} +getDuplicateSessions ( paramDefaultTableModel1 : javax.swing.table.DefaultTableModel , paramString2 : String ) : net.ukrcom.onlinemanager.RestApiClient
+	{method} +login ( paramString1 : String , paramString2 : String ) : boolean
+	{method} +logout () : void
+	{method} -post ( paramString1 : String , paramString2 : String ) : com.fasterxml.jackson.databind.JsonNode
+	{method}  {static} -text ( paramJsonNode1 : com.fasterxml.jackson.databind.JsonNode , paramString2 : String ) : String
+}
+
+
+class net.ukrcom.onlinemanager.Timer {
+	{field} -timer : javax.swing.Timer
+	{method} +start () : void
+	{method} +stop () : void
+}
+
+
+class net.ukrcom.onlinemanager.VersionChecker {
+	{field} {static} -GITHUB_API_URL : String
+	{field} {static} -RELEASES_URL : String
+	{method}  {static} +checkForUpdates ( paramJFrame1 : javax.swing.JFrame ) : void
+	{method}  {static} -extractTagFromJson ( paramString1 : String ) : String
+	{method}  {static} +getCurrentVersion () : String
+	{method}  {static} -isNewerVersion ( paramString1 : String , paramString2 : String ) : boolean
+	{method}  {static} -openInBrowser ( paramString1 : String ) : void
+}
+
+
+class net.ukrcom.onlinemanager.gridOnline {
+	{field} +jButtonClearCustomerFilter : javax.swing.JButton
+	{field} +jButtonRefresh : javax.swing.JButton
+	{field} +jButtonUsernameAndFramedIPFilter : javax.swing.JButton
+	{field} +jCheckBoxOnline : javax.swing.JCheckBox
+	{field} +jFormattedTextFieldDays : javax.swing.JFormattedTextField
+	{field} +jLabelCustomerFilter : javax.swing.JLabel
+	{field} +jLabelCustomerLocation : javax.swing.JLabel
+	{field} +jLabelCustomerName : javax.swing.JLabel
+	{field} +jLabelFilterLastDays1 : javax.swing.JLabel
+	{field} +jLabelFilterLastDays2 : javax.swing.JLabel
+	{field} +jLabelFramedIP : javax.swing.JLabel
+	{field} +jLabelLinkTime : javax.swing.JLabel
+	{field} +jLabelRadiusID : javax.swing.JLabel
+	{field} +jLabelRouter : javax.swing.JLabel
+	{field} +jLabelSessionID : javax.swing.JLabel
+	{field} +jLabelStartTIme : javax.swing.JLabel
+	{field} +jLabelStopTime : javax.swing.JLabel
+	{field} +jLabelTableOnlineRowCount : javax.swing.JLabel
+	{field} +jLabelUpdateTime : javax.swing.JLabel
+	{field} +jLabelUsername : javax.swing.JLabel
+	{field} +jLabelUsernameAndFramedIPFilter : javax.swing.JLabel
+	{field} +jPanelBottom : javax.swing.JPanel
+	{field} +jPanelCustomerFilter : javax.swing.JPanel
+	{field} +jPanelDetail : javax.swing.JPanel
+	{field} +jPanelFilter : javax.swing.JPanel
+	{field} +jPanelLastDays : javax.swing.JPanel
+	{field} +jPanelOnlyActiveFilter : javax.swing.JPanel
+	{field} +jPanelTableOnline : javax.swing.JPanel
+	{field} +jPanelUsernameAndFramedIPFilter : javax.swing.JPanel
+	{field} +jScrollPaneTableOnline : javax.swing.JScrollPane
+	{field} +jTableOnline : javax.swing.JTable
+	{field} +jTextFieldCustomerFilter : javax.swing.JTextField
+	{field} +jTextFieldCustomerLocation : javax.swing.JTextField
+	{field} +jTextFieldCustomerName : javax.swing.JTextField
+	{field} +jTextFieldFramedIP : javax.swing.JTextField
+	{field} +jTextFieldLinkTime : javax.swing.JTextField
+	{field} +jTextFieldRadiusID : javax.swing.JTextField
+	{field} +jTextFieldRouter : javax.swing.JTextField
+	{field} +jTextFieldSessionID : javax.swing.JTextField
+	{field} +jTextFieldStartTIme : javax.swing.JTextField
+	{field} +jTextFieldStopTime : javax.swing.JTextField
+	{field} +jTextFieldUpdateTime : javax.swing.JTextField
+	{field} +jTextFieldUsername : javax.swing.JTextField
+	{field} +jTextFieldUsernameAndFramedIPFilter : javax.swing.JTextField
+	{field} +jWhereOperation : javax.swing.JComboBox
+	{method} -initComponents () : void
+	{method} -jButtonClearCustomerFilterActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonRefreshActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jButtonUsernameAndFramedIPFilterActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jCheckBoxOnlineActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jTableOnlineKeyReleased ( paramKeyEvent1 : java.awt.event.KeyEvent ) : void
+	{method} -jTableOnlineMouseClicked ( paramMouseEvent1 : java.awt.event.MouseEvent ) : void
+	{method} +jTableOnlineSelectRow ( paramint1 : int ) : void
+	{method} +loadData () : void
+	{method} +showCell ( paramint1 : int , paramint2 : int ) : int
+	{method} +updateRowCountInfo () : void
+}
+
+
+class net.ukrcom.onlinemanager.gridOnline$BeanInfo {
+	{method} +getIcon ( paramint1 : int ) : java.awt.Image
+}
+
+
+class net.ukrcom.onlinemanager.jConfig {
+	{field} +databaseName : String
+	{field} +password : String
+	{field} +restApiUrl : String
+	{field} +restpassword : String
+	{field} +restserverName : String
+	{field} +restusername : String
+	{field} +serverName : String
+	{field} +username : String
+}
+
+
+class net.ukrcom.onlinemanager.jConfigSerializing {
+	{field} -configFile : java.io.File
+	{field} +xmlName : String
+	{method} -getConfigFilePath () : java.nio.file.Path
+	{method} +getCurrentConfigFile () : java.io.File
+	{method} +load () : net.ukrcom.onlinemanager.jConfig
+	{method} +save ( paramjConfig1 : net.ukrcom.onlinemanager.jConfig ) : void
+}
+
+
+class net.ukrcom.onlinemanager.jCutCopyPaste {
+	{field} +actionCopy : javax.swing.text.DefaultEditorKit$CopyAction
+	{field} +actionCut : javax.swing.text.DefaultEditorKit$CutAction
+	{field} +actionPaste : javax.swing.text.DefaultEditorKit$PasteAction
+	{field} +actionSelectAll : net.ukrcom.onlinemanager.jCutCopyPaste$SelectAllAction
+	{field} -jMenuItemPopupCopy : javax.swing.JMenuItem
+	{field} +jMenuItemPopupCut : javax.swing.JMenuItem
+	{field} +jMenuItemPopupPaste : javax.swing.JMenuItem
+	{field} -jMenuItemPopupSelectAll : javax.swing.JMenuItem
+	{field} +jPopupMenu : javax.swing.JPopupMenu
+	{field} -jSeparator1 : javax.swing.JPopupMenu$Separator
+	{method} -initComponents () : void
+	{method} -jMenuItemPopupCopyActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemPopupCutActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemPopupPasteActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemPopupSelectAllActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+}
+
+
+class net.ukrcom.onlinemanager.jMainFrame {
+	{field} -duplicateCheck : javax.swing.JFrame
+	{field} -jCheckBoxMenuItem1 : javax.swing.JCheckBoxMenuItem
+	{field} #jCheckBoxMenuItemAutoRefresh : javax.swing.JCheckBoxMenuItem
+	{field} -jMainMenuBar : javax.swing.JMenuBar
+	{field} -jMenuEdit : javax.swing.JMenu
+	{field} -jMenuFile : javax.swing.JMenu
+	{field} -jMenuItem1 : javax.swing.JMenuItem
+	{field} -jMenuItem2 : javax.swing.JMenuItem
+	{field} -jMenuItemDuplicateCheck : javax.swing.JMenuItem
+	{field} -jMenuItemEditCopy : javax.swing.JMenuItem
+	{field} -jMenuItemEditCut : javax.swing.JMenuItem
+	{field} -jMenuItemEditPaste : javax.swing.JMenuItem
+	{field} -jMenuItemExit : javax.swing.JMenuItem
+	{field} -jMenuItemMainPanel : javax.swing.JMenuItem
+	{field} -jMenuItemResetAndRefresh : javax.swing.JMenuItem
+	{field} -jMenuItemSelectAll : javax.swing.JMenuItem
+	{field} -jMenuItemSetup : javax.swing.JMenuItem
+	{field} -jMenuRefresh : javax.swing.JMenu
+	{field} -jMenuWindow : javax.swing.JMenu
+	{field} -jSeparator1 : javax.swing.JPopupMenu$Separator
+	{field} -jSeparator3 : javax.swing.JPopupMenu$Separator
+	{field} -mainPanelVisible : boolean
+	{method} -Exit ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -checkStateAutoRefresh () : void
+	{method} +dispose () : void
+	{method} +fullRefresh () : void
+	{method} -initComponents () : void
+	{method} -jCheckBoxMenuItemAutoRefreshActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemDuplicateCheckActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemEditCopyActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemEditCutActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemEditPasteActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemMainPanelActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemResetAndRefreshActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemSelectAllActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} -jMenuItemSetupActionPerformed ( paramActionEvent1 : java.awt.event.ActionEvent ) : void
+	{method} +simpleRefresh () : void
+	{method} +updateRowCountInfo () : void
+}
+
+
+
+
+net.ukrcom.onlinemanager.JFrameDuplicateCheck -->  net.ukrcom.onlinemanager.jCutCopyPaste : jCutCopyPaste
+net.ukrcom.onlinemanager.RestApiClient -->  net.ukrcom.onlinemanager.RestApiClient : instance
+net.ukrcom.onlinemanager.Timer *--  net.ukrcom.onlinemanager.jMainFrame : jmf
+net.ukrcom.onlinemanager.jMainFrame *--  net.ukrcom.onlinemanager.Timer : timer
+net.ukrcom.onlinemanager.jMainFrame -->  net.ukrcom.onlinemanager.JSetup : setup
+net.ukrcom.onlinemanager.jMainFrame -->  net.ukrcom.onlinemanager.gridOnline : gridOnlinePanel
+net.ukrcom.onlinemanager.jMainFrame -->  net.ukrcom.onlinemanager.jCutCopyPaste : jCutCopyPaste
+
+
+@enduml

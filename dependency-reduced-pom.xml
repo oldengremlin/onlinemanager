@@ -125,6 +125,61 @@
           <persist>true</persist>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>de.elnarion.maven</groupId>
+        <artifactId>plantuml-generator-maven-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>desktop-overview</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.basedir}/docs/plantuml</outputDirectory>
+              <outputFilename>desktop-overview.puml</outputFilename>
+              <scanPackages>
+                <scanPackage>net.ukrcom.onlinemanager</scanPackage>
+              </scanPackages>
+              <addJPAAnnotations>false</addJPAAnnotations>
+              <hideFields>false</hideFields>
+              <hideMethods>false</hideMethods>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.6.3</version>
+        <executions>
+          <execution>
+            <id>render-plantuml-svg</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <mainClass>net.sourceforge.plantuml.Run</mainClass>
+              <arguments>
+                <argument>-tsvg</argument>
+                <argument>-o</argument>
+                <argument>${project.basedir}/docs/plantuml</argument>
+                <argument>${project.basedir}/docs/plantuml</argument>
+              </arguments>
+              <includePluginDependencies>true</includePluginDependencies>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>1.2026.2</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
   <properties>
