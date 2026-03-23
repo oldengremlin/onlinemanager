@@ -11,19 +11,33 @@ class Html2Text {
 }
 
 
+class JDialogDuplicateAutofix {
+	{field} -duplicateRunAction : DuplicateRunAction
+	{field} ~isCanceled : boolean
+	{field} -jProgressBarDuplicateData : JProgressBar
+	{field} -jProgressBarDuplicateSessions : JProgressBar
+	{field} {static} -semaphore : Semaphore
+	{method} -initComponents () : void
+	{method} -jButtonCancelActionPerformed ( paramActionEvent1 : ActionEvent ) : void
+	{method} -jButtonRunActionPerformed ( paramActionEvent1 : ActionEvent ) : void
+}
+
+
 class JFrameDuplicateCheck {
 	{field} -candidateAcctStopTime : String
 	{field} -currentAcctStartTime : String
 	{field} -currentFramedIPAddress : String
 	{field} -currentRadAcctID : Long
 	{field} -currentUsername : String
+	{field} -jFormAutoFix : JDialog
 	{method} -initComponents () : void
 	{method} -jButtonRequestCorrectionActionPerformed ( paramActionEvent1 : ActionEvent ) : void
-	{method} -jMenuItem1ActionPerformed ( paramActionEvent1 : ActionEvent ) : void
+	{method} -jMenuItemAutofixActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItemCloseActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItemCopyActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItemCutActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItemPasteActionPerformed ( paramActionEvent1 : ActionEvent ) : void
+	{method} -jMenuItemRefreshActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jMenuItemSelectAllActionPerformed ( paramActionEvent1 : ActionEvent ) : void
 	{method} -jTableDuplicateSessionsKeyReleased ( paramKeyEvent1 : KeyEvent ) : void
 	{method} -jTableDuplicateSessionsLoadData () : void
@@ -66,9 +80,12 @@ class RestApiClient {
 	{method} -buildRequest ( paramString1 : String , paramString2 : String ) : JsonNode
 	{method} +correctionAcctStopTime ( paramLong1 : Long , paramString2 : String ) : RestApiClient
 	{method}  {static} -encode ( paramString1 : String ) : String
+	{method} +getAcctStopTimeCandidate ( paramString1 : String , paramString2 : String , paramString3 : String ) : ArrayList
 	{method} +getAcctStopTimeCandidate ( paramDefaultTableModel1 : DefaultTableModel , paramString2 : String , paramString3 : String , paramString4 : String ) : RestApiClient
 	{method} +getData ( paramDefaultTableModel1 : DefaultTableModel , paramint2 : int , paramboolean3 : boolean , paramint4 : int , paramString5 : String , paramString6 : String ) : RestApiClient
+	{method} +getDuplicateData () : ArrayList
 	{method} +getDuplicateData ( paramDefaultTableModel1 : DefaultTableModel ) : RestApiClient
+	{method} +getDuplicateSessions ( paramString1 : String ) : ArrayList
 	{method} +getDuplicateSessions ( paramDefaultTableModel1 : DefaultTableModel , paramString2 : String ) : RestApiClient
 	{method} +login ( paramString1 : String , paramString2 : String ) : boolean
 	{method} +logout () : void

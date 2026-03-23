@@ -3,8 +3,6 @@
  */
 package net.ukrcom.onlinemanager;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.apache.commons.lang3.SystemUtils;
 

@@ -10,10 +10,10 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.io.IOException;
 import java.io.StringReader;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -72,7 +72,8 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         jSeparator = new javax.swing.JPopupMenu.Separator();
         jMenuItemSelectAll = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItemRefresh = new javax.swing.JMenuItem();
+        jMenuItemAutofix = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Duplicate Check");
@@ -349,14 +350,22 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
 
         jMenu1.setText("Data");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setText("Refresh");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemRefresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemRefresh.setText("Refresh");
+        jMenuItemRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuItemRefreshActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(jMenuItemRefresh);
+
+        jMenuItemAutofix.setText("Autofix");
+        jMenuItemAutofix.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAutofixActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemAutofix);
 
         jMenuBar1.add(jMenu1);
 
@@ -433,7 +442,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonRequestCorrectionActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuItemRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRefreshActionPerformed
         this.jTableDuplicateSessionsLoadData();
 
         DefaultTableModel model;
@@ -443,7 +452,22 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
 
         model = (DefaultTableModel) this.jTableSessionFoundByUsername.getModel();
         model.setRowCount(0);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenuItemRefreshActionPerformed
+
+    private void jMenuItemAutofixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAutofixActionPerformed
+        if (this.jFormAutoFix == null) {
+            this.jFormAutoFix = new JDialogDuplicateAutofix(this, true);
+        }
+        jFormAutoFix.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                jFormAutoFix.dispose();
+            }
+        });
+        this.jFormAutoFix.setLocationRelativeTo(this);
+        this.jFormAutoFix.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItemAutofixActionPerformed
 
     private void jTableDuplicateSessionsLoadData() {
         try {
@@ -576,11 +600,12 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItemAutofix;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCopy;
     private javax.swing.JMenuItem jMenuItemCut;
     private javax.swing.JMenuItem jMenuItemPaste;
+    private javax.swing.JMenuItem jMenuItemRefresh;
     private javax.swing.JMenuItem jMenuItemSelectAll;
     private javax.swing.JPanel jPanelDetailedList;
     private javax.swing.JPanel jPanelDuplicateSessions;
@@ -602,4 +627,5 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
     private String currentFramedIPAddress;
     private String currentAcctStartTime;
     private String candidateAcctStopTime;
+    private JDialog jFormAutoFix;
 }

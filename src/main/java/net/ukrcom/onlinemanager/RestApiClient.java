@@ -18,6 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -126,6 +127,21 @@ public class RestApiClient {
         return this;
     }
 
+    public ArrayList<Object> getDuplicateData()
+            throws IOException, InterruptedException {
+        JsonNode data = post("/getduplicate", "");
+        ArrayList<Object> duplicateData = new ArrayList<>();
+        if (data != null && data.isArray()) {
+            for (JsonNode row : data) {
+                duplicateData.add(new Object[]{
+                    row.get("username").asText(),
+                    row.get("count").asText()
+                });
+            }
+        }
+        return duplicateData;
+    }
+
     // ====================== ДЕТАЛІ ДУБЛІКАТІВ ======================
     public RestApiClient getDuplicateSessions(DefaultTableModel DFT, String username)
             throws IOException, InterruptedException {
@@ -142,6 +158,23 @@ public class RestApiClient {
             }
         }
         return this;
+    }
+
+    public ArrayList<Object> getDuplicateSessions(String username)
+            throws IOException, InterruptedException {
+        JsonNode data = post("/getduplicatesessions", "username=" + encode(username));
+        ArrayList<Object> duplicateSessions = new ArrayList<>();
+        if (data != null && data.isArray()) {
+            for (JsonNode row : data) {
+                duplicateSessions.add(new Object[]{
+                    row.get("radacctid").asText(),
+                    row.get("framedipaddress").asText(),
+                    row.get("acctstarttime").asText(),
+                    row.get("acctupdatetime").asText()
+                });
+            }
+        }
+        return duplicateSessions;
     }
 
     // ====================== КАНДИДАТ НА ЗАКРИТТЯ ======================
@@ -162,6 +195,25 @@ public class RestApiClient {
             }
         }
         return this;
+    }
+
+    public ArrayList<Object> getAcctStopTimeCandidate(
+            String startTime, String username, String ip)
+            throws IOException, InterruptedException {
+        String body = "starttime=" + encode(startTime)
+                + "&username=" + encode(username)
+                + "&ip=" + encode(ip);
+        JsonNode data = post("/getacctstoptimecandidate", body);
+        ArrayList<Object> stopTimeCandidate = new ArrayList<>();
+        if (data != null && data.isArray()) {
+            for (JsonNode row : data) {
+                stopTimeCandidate.add(new Object[]{
+                    row.get("acctstarttime").asText(),
+                    row.get("acctstoptime").asText()
+                });
+            }
+        }
+        return stopTimeCandidate;
     }
 
     // ====================== КОРЕКЦІЯ ЧАСУ ======================
