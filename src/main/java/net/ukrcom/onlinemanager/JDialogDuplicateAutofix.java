@@ -100,6 +100,8 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
 
         getContentPane().add(jPanel1);
 
+        getAccessibleContext().setAccessibleName("Automatic fix of duplicates");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -177,20 +179,20 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
             jProgressBarDuplicateData.setValue(duplicateDataCounter);
             for (Object objectData : duplicateData) {
 
-                DuplicateData data = new DuplicateData(
+                DuplicateData dataDuplicate = new DuplicateData(
                         duplicateDataCounter,
                         (String) ((Object[]) objectData)[0],
                         Integer.parseInt((String) ((Object[]) objectData)[1])
                 );
 
-                duplicateSessions = RestApiClient.getInstance().getDuplicateSessions(data.username);
+                duplicateSessions = RestApiClient.getInstance().getDuplicateSessions(dataDuplicate.username);
                 duplicateSessionsCounter = 0;
                 jProgressBarDuplicateSessions.setMaximum(duplicateSessions.size());
                 jProgressBarDuplicateSessions.setValue(duplicateSessionsCounter);
 
                 for (Object objectSessions : duplicateSessions) {
                     SessionData dataSession = new SessionData(
-                            data.dataCounter,
+                            dataDuplicate.dataCounter,
                             duplicateSessionsCounter,
                             Long.parseLong((String) ((Object[]) objectSessions)[0]),
                             (String) ((Object[]) objectData)[0],
@@ -202,6 +204,7 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
 
                     jProgressBarDuplicateData.setToolTipText(dataSession.username);
                     jLabelDuplicates.setText("Duplicates: " + dataSession.username);
+                    jLabelDuplicates.repaint();
                     publish(dataSession);
                     jProgressBarDuplicateSessions.setValue(++duplicateSessionsCounter);
                 }
@@ -230,6 +233,8 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
 
                         jProgressBarDuplicateSessions.setToolTipText(acctstoptime);
                         jLabelCorrection.setText("Correction: " + jLabelDuplicates.getText() + " – " + data.get(data.size() - 1).acctstarttime + " – " + acctstoptime);
+                        jLabelCorrection.repaint();
+
                         System.err.println("DuplicateSessionsAction.process: "
                                 + data.get(data.size() - 1).dataCounter + " "
                                 + data.get(data.size() - 1).sessionsCounter + " "

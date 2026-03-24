@@ -95,7 +95,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAutofix">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Autofix"/>
+                <Property name="text" type="java.lang.String" value="Automatic fix of duplicates"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAutofixActionPerformed"/>

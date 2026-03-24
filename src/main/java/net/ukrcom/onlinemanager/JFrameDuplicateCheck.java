@@ -359,7 +359,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItemRefresh);
 
-        jMenuItemAutofix.setText("Autofix");
+        jMenuItemAutofix.setText("Automatic fix of duplicates");
         jMenuItemAutofix.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemAutofixActionPerformed(evt);
@@ -467,6 +467,7 @@ public class JFrameDuplicateCheck extends javax.swing.JFrame {
         this.jFormAutoFix.setLocationRelativeTo(this);
         this.jFormAutoFix.setVisible(true);
 
+        jMenuItemRefreshActionPerformed(evt);
     }//GEN-LAST:event_jMenuItemAutofixActionPerformed
 
     private void jTableDuplicateSessionsLoadData() {
