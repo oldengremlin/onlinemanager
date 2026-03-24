@@ -37,8 +37,10 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanelDuplicates = new javax.swing.JPanel();
         jLabelDuplicates = new javax.swing.JLabel();
         jProgressBarDuplicateData = new javax.swing.JProgressBar();
+        jPanelCorrection = new javax.swing.JPanel();
         jLabelCorrection = new javax.swing.JLabel();
         jProgressBarDuplicateSessions = new javax.swing.JProgressBar();
         jPanel1 = new javax.swing.JPanel();
@@ -50,52 +52,53 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
         setIconImage(null);
         setMinimumSize(getPreferredSize());
         setModal(true);
-        setPreferredSize(new java.awt.Dimension(800, 190));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        setPreferredSize(new java.awt.Dimension(800, 200));
+        getContentPane().setLayout(new java.awt.GridLayout(3, 0));
 
+        jPanelDuplicates.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jPanelDuplicates.setLayout(new java.awt.GridLayout(2, 1));
+
+        jLabelDuplicates.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelDuplicates.setText("Duplicates");
-        getContentPane().add(jLabelDuplicates, new java.awt.GridBagConstraints());
+        jPanelDuplicates.add(jLabelDuplicates);
 
         jProgressBarDuplicateData.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jProgressBarDuplicateData.setMaximumSize(new java.awt.Dimension(32767, 40));
         jProgressBarDuplicateData.setMinimumSize(getPreferredSize());
         jProgressBarDuplicateData.setPreferredSize(new java.awt.Dimension(800, 40));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(jProgressBarDuplicateData, gridBagConstraints);
+        jPanelDuplicates.add(jProgressBarDuplicateData);
 
+        getContentPane().add(jPanelDuplicates);
+
+        jPanelCorrection.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jPanelCorrection.setLayout(new java.awt.GridLayout(2, 1));
+
+        jLabelCorrection.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelCorrection.setText("Correction");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        getContentPane().add(jLabelCorrection, gridBagConstraints);
+        jPanelCorrection.add(jLabelCorrection);
 
         jProgressBarDuplicateSessions.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jProgressBarDuplicateSessions.setMaximumSize(new java.awt.Dimension(32767, 40));
         jProgressBarDuplicateSessions.setMinimumSize(getPreferredSize());
         jProgressBarDuplicateSessions.setPreferredSize(new java.awt.Dimension(800, 40));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(jProgressBarDuplicateSessions, gridBagConstraints);
+        jPanelCorrection.add(jProgressBarDuplicateSessions);
+
+        getContentPane().add(jPanelCorrection);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jButtonRun.setText("Run");
+        jButtonRun.setBorderPainted(false);
         jButtonRun.addActionListener(this::jButtonRunActionPerformed);
         jPanel1.add(jButtonRun);
 
         jButtonCancel.setText("Cancel");
+        jButtonCancel.setBorderPainted(false);
         jButtonCancel.setEnabled(false);
         jButtonCancel.addActionListener(this::jButtonCancelActionPerformed);
         jPanel1.add(jButtonCancel);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(jPanel1, gridBagConstraints);
+        getContentPane().add(jPanel1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -128,6 +131,8 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelCorrection;
     private javax.swing.JLabel jLabelDuplicates;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelCorrection;
+    private javax.swing.JPanel jPanelDuplicates;
     private javax.swing.JProgressBar jProgressBarDuplicateData;
     private javax.swing.JProgressBar jProgressBarDuplicateSessions;
     // End of variables declaration//GEN-END:variables
@@ -197,7 +202,6 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
 
                     jProgressBarDuplicateData.setToolTipText(dataSession.username);
                     jLabelDuplicates.setText("Duplicates: " + dataSession.username);
-
                     publish(dataSession);
                     jProgressBarDuplicateSessions.setValue(++duplicateSessionsCounter);
                 }
@@ -209,44 +213,46 @@ public class JDialogDuplicateAutofix extends javax.swing.JDialog {
 
         @Override
         public void process(List<SessionData> data) {
-            if (isCancelled()) {
-                return;
-            }
-
             try {
-                stopTimeCandidate = RestApiClient.getInstance().getAcctStopTimeCandidate(
-                        data.get(data.size() - 1).acctstarttime,
-                        data.get(data.size() - 1).username,
-                        data.get(data.size() - 1).framedipaddress
-                );
-
-                for (Object objectStopTimeCandidate : stopTimeCandidate) {
-                    String acctstoptime = (String) ((Object[]) objectStopTimeCandidate)[1];
-
-                    jProgressBarDuplicateSessions.setToolTipText(acctstoptime);
-                    jLabelCorrection.setText("Correction: " + jLabelDuplicates.getText() + " – " + data.get(data.size() - 1).acctstarttime + " – " + acctstoptime);
-                    System.err.println("DuplicateSessionsAction.process: "
-                            + data.get(data.size() - 1).dataCounter + " "
-                            + data.get(data.size() - 1).sessionsCounter + " "
-                            + data.get(data.size() - 1).radacctid + " "
-                            + data.get(data.size() - 1).username + " "
-                            + data.get(data.size() - 1).framedipaddress + " "
-                            + data.get(data.size() - 1).acctstarttime + " "
-                            + data.get(data.size() - 1).acctupdatetime + " "
-                            + acctstoptime
-                    );
-
-                    RestApiClient.getInstance().correctionAcctStopTime(
-                            data.get(data.size() - 1).radacctid,
-                            acctstoptime
-                    );
-
+                if (isCancelled()) {
+                    return;
                 }
-            } catch (IOException | ClassNotFoundException | InterruptedException ex) {
-                System.getLogger(JDialogDuplicateAutofix.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
 
-            semaphore.release();
+                try {
+                    stopTimeCandidate = RestApiClient.getInstance().getAcctStopTimeCandidate(
+                            data.get(data.size() - 1).acctstarttime,
+                            data.get(data.size() - 1).username,
+                            data.get(data.size() - 1).framedipaddress
+                    );
+
+                    for (Object objectStopTimeCandidate : stopTimeCandidate) {
+                        String acctstoptime = (String) ((Object[]) objectStopTimeCandidate)[1];
+
+                        jProgressBarDuplicateSessions.setToolTipText(acctstoptime);
+                        jLabelCorrection.setText("Correction: " + jLabelDuplicates.getText() + " – " + data.get(data.size() - 1).acctstarttime + " – " + acctstoptime);
+                        System.err.println("DuplicateSessionsAction.process: "
+                                + data.get(data.size() - 1).dataCounter + " "
+                                + data.get(data.size() - 1).sessionsCounter + " "
+                                + data.get(data.size() - 1).radacctid + " "
+                                + data.get(data.size() - 1).username + " "
+                                + data.get(data.size() - 1).framedipaddress + " "
+                                + data.get(data.size() - 1).acctstarttime + " "
+                                + data.get(data.size() - 1).acctupdatetime + " "
+                                + acctstoptime
+                        );
+
+                        RestApiClient.getInstance().correctionAcctStopTime(
+                                data.get(data.size() - 1).radacctid,
+                                acctstoptime
+                        );
+
+                    }
+                } catch (IOException | ClassNotFoundException | InterruptedException ex) {
+                    System.getLogger(JDialogDuplicateAutofix.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+            } finally {
+                semaphore.release();
+            }
         }
 
         @Override
